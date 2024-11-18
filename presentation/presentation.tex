@@ -1,5 +1,5 @@
 \documentclass{beamer}
-\usetheme{metropolis}           % Use metropolis theme
+\usetheme{metropolis}
 \title{Revenue Maximization for Buyers with Costly Participation}
 \date{DD.01.2025}
 \author{Ayk Borstelmann}
@@ -7,12 +7,25 @@
     Seminar Algorithmic Game Theory
 }
 \begin{document}
-  \maketitle
-  \section{First Section}
-  \begin{frame}{First Frame}
-    Hello, world!
-  \end{frame}
-  \begin{frame}{Second Frame}
-    Hello, world!
-  \end{frame}
+\maketitle
+\section{Introductory Example}
+\begin{frame}{Problem Statement}
+  \begin{itemize}
+    \item Set $\mathcal{N}$ of $n$ players
+    \item Set $\mathcal{X}$ of outcomes
+    \item Each agent $i \in \mathcal{N}$ has
+          \begin{itemize}
+            \item private valuation $v_i: \mathcal{X} \rightarrow \mathbb{R}$
+            \item a set of possible bids $B_i$
+            \item<2-> \alert{private participation cost $c_i: \mathbb{R}$}
+          \end{itemize}
+    \item $B = B_1 \times \dots \times B_n$ set of all bids
+    \item Mechanism $M = (f,p)$
+          \begin{itemize}
+            \item $f: B \rightarrow \mathcal{X}$ Allocation function
+            \item $p: B \rightarrow \mathbb{R}^n$ Payment function
+          \end{itemize}
+    \item Utility $u_i^M(b) = v_i(f(b)) - p_i(b) \only<2->{\alert{-c_i}}$
+  \end{itemize}
+\end{frame}
 \end{document}
