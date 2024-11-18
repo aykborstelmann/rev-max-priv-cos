@@ -1,4 +1,6 @@
 \documentclass{beamer}
+\usepackage[style=authoryear]{biblatex}
+\addbibresource{references.bib} 
 \usetheme{metropolis}
 \title{Revenue Maximization for Buyers with Costly Participation}
 \date{DD.01.2025}
@@ -6,6 +8,8 @@
 \institute{
     Seminar Algorithmic Game Theory
 }
+
+
 \begin{document}
 \maketitle
 \section{Introductory Example}
@@ -27,5 +31,48 @@
           \end{itemize}
     \item Utility $u_i^M(b) = v_i(f(b)) - p_i(b) \only<2->{\alert{-c_i}}$
   \end{itemize}
+\end{frame}
+\begin{frame}{Single Item Auction - Known Distributions}
+  Each buyer $i \in \mathcal{N}$ has ...
+  \begin{itemize}
+    \item private valuation $v_i \geq 0$ for getting the item\\
+    marginal distribution: $F_i$\\
+    density: $f_i$
+    \item private cost $c_i \in \mathbb{R}$ for participating in the mechanism \\
+    marginal distribution: $G_i$ \\
+    density: $g_i$.
+  \end{itemize}
+  $t_i = (v_i, c_i)$ is the private type of player $i$, prior distribution $\bar{F}_i$.
+
+  $\bar{F} = \bar{F}_1 \times \dots \times \bar{F}_n$.
+\end{frame}
+
+\section{Single Buyer}
+
+\begin{frame}{Expected Revenue - Myerson}
+  \begin{lemma}[\cite{myerson}]
+    Let $M=(x,p)$ be a truthful single-parameter mechanism, then the expected revenue equals the expected virtual welfare. That is
+    \begin{align*}
+      \mathbf{E}_v\left[\sum_{i \in \mathcal{N}}p_i(v)\right] 
+      = \mathbf{E}_v\left[\sum_{i \in \mathcal{N}}x_i(v)\varphi_i(v_i)\right]
+    \end{align*}
+
+    where $\varphi_i(t) = t - \frac{1 - F_i(t)}{f_i(t)}$
+  \end{lemma}
+
+  For single item single buyer:
+  \begin{align*}
+    \mathbf{E}_v\left[p(v)\right] 
+    = \mathbf{E}_v\left[x(v)\varphi(v)\right]
+  \end{align*}
+\end{frame}
+
+\begin{frame}{Expected Revenue - }
+  \begin{theorem}
+    \begin{align*}
+      \mathbf{E}_{t \sim \bar{F}}\left[p_c(v)\right] 
+      = \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \max\{-p_0,c\}\right]
+    \end{align*}
+  \end{theorem}
 \end{frame}
 \end{document}
