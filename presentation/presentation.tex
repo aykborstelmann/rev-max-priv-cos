@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \usepackage[style=authoryear]{biblatex}
+\usepackage{mathtools}
 \addbibresource{references.bib} 
 \usetheme{metropolis}
 \title{Revenue Maximization for Buyers with Costly Participation}
@@ -47,7 +48,7 @@
   $\bar{F} = \bar{F}_1 \times \dots \times \bar{F}_n$.
 \end{frame}
 
-\section{Single Buyer}
+\section{Single Buyer - Expected Revenue \& Incentive Compatible}
 
 \begin{frame}{Expected Revenue - Myerson}
   \begin{lemma}[\cite{myerson}]
@@ -111,7 +112,7 @@
     \end{align*}
   \end{theorem}
 
-  Maybe also add proof / proof idea for truthfulness and 
+  Maybe also add proof / proof idea for truthfulness and
 \end{frame}
 
 \begin{frame}{Expected Revenue - Private Cost - Proof}
@@ -160,5 +161,157 @@
   \qed
 \end{frame}
 
+\section{Single Buyer - Revenue Maximizing Mechanism}
+
+\begin{frame}{FPTAS Algorithm - Motivation}
+  Search for $\operatorname{argmax}_{\mathcal{M}} \mathbf{E}\left[p(v)\right]$.
+
+  But: $\mathbf{E}\left[p(v)\right]$ is non-convex.
+
+  $\Rightarrow$ Approximate $\operatorname{argmax}_{\mathcal{M}} \mathbf{E}\left[p(v)\right]$ using FPTAS.
+
+  \textbf{Idea}:
+  \begin{itemize}
+    \item Discretize value $v$'s space normed to $[0,1]$ and allocation function $x$'s space.
+    \item Calculate optimal mechanism, i.e. optimal allocation $x(v)$ and each $v$.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{FPTAS Algorithm - Formalism}
+  \begin{itemize}
+    \item Let $\epsilon \in (0,1)$ (discretization degree).
+    \item Let $\bar{F}'$ be type distribution of $\bar{F}$ with \textbf{value} rounded down to nearest multiple of $\epsilon$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Recursive Formula}
+  Let $R(i,j,k)$ be the optimal revenue, when
+  \begin{itemize}
+    \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
+    \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
+    \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
+  \end{itemize}
+  \begin{align*}
+    \Rightarrow R(i,j,k) = \max_x \mathbf{E}[p(v) \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2]
+  \end{align*}
+
+  \textbf{Base case:}
+  For $i = 1$ we have
+  \begin{itemize}
+    \item $R(1,j,k) = 0$ for any $k \leq j$
+    \item $R(1,j,k) = -\infty$ for $k > j$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Recursive Step}
+  \textbf{Recursion Step:}
+  Let $i \geq 2$.
+  \begin{align*}
+     & R(i,j,k)                                                                                                                                                               \\
+     & = \max_x \mathbf{E}[p(v) \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2]                                                                 \\
+     & = \alert<2>{\max_x \mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]}                                    \\
+     & + \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, \dots ] \mathbf{E}\left[p(v) \mid v = i\epsilon, x(i\epsilon) = j\epsilon, \dots \right]
+  \end{align*}
+\end{frame}
+
+\begin{frame}{Recursive Step - Lower Value}
+  \begin{align*}
+    \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]
+  \end{align*}
+  For $v' = (i-1)\epsilon$:
+  \only<1>{
+    \begin{align*}
+      u(i\epsilon)     & = \int_0^{i \epsilon} x(t)dt - p_0 = \underbrace{\int_0^{(i-1) \epsilon} x(t)dt - p_0}_{u((i-1)\epsilon)} + \int_{(i-1)\epsilon}^{i\epsilon} \underbrace{x(t)}_{\text{const}}dt \\
+                       & = u((i-1)\epsilon) + \epsilon x(i\epsilon) = u((i-1)\epsilon) + j \epsilon^2                                                                                                    \\
+                       & \Leftrightarrow                                                                                                                                                                 \\
+      u((i-1)\epsilon) & = u(i\epsilon) - j \epsilon^2 = k \epsilon2 - j \epsilon^2= (k-j)\epsilon^2
+    \end{align*}
+  }
+  \only<2>{
+    \begin{itemize}
+      \item $u(v') = (k-j)\epsilon^2$
+      \item $x(v') \leq j \epsilon$ (lower values should not be allocated more)
+    \end{itemize}
+    \begin{align*}
+        & \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]                    \\
+      = & \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x((i-1)\epsilon) \leq j\epsilon, u((i-1)\epsilon) = (k-j)\epsilon^2 \right]     \\
+      = & \max_{j' \leq j}\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x((i-1)\epsilon) = j'\epsilon, u(i\epsilon) = (k-j)\epsilon^2 \right] \\
+      = & \max_{j' \leq j} R(i-1, j', k-j)                                                                                                         \\
+    \end{align*}
+  }
+\end{frame}
+
+\begin{frame}{Recursive Step}
+  \textbf{Recursion Step:}
+  Let $i \geq 2$.
+  \begin{align*}
+     & R(i,j,k)                                                                                                                                                                          \\
+     & = \max_{j' \leq j} R(i-1, j', k-j)                                                                                                                                                \\
+     & + \alert<2>{\mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, \dots ] \mathbf{E}\left[p(v) \mid v = i\epsilon, x(i\epsilon) = j\epsilon, \dots \right]}
+  \end{align*}
+\end{frame}
+
+\begin{frame}{Recursive Step - Exact value}
+  Occurrence Probability
+  \begin{align*}
+    \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2] = \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon] \eqcolon q_i
+  \end{align*}
+
+  Expected Revenue
+  \begin{align*}
+     & \mathbf{E}\left[p(v) \mid v = i\epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]                                               \\
+     & = \mathbf{Pr}[c \leq u(v) \mid v = i\epsilon, u(i\epsilon) = k\epsilon^2] \cdot \mathbf{E}\left[p(v) \mid v = i\epsilon, c \leq u(v), \dots \right] \\
+     & = \bar{F}'_i(k \epsilon^2) \footnotemark[1] \cdot \mathbf{E}\left[p(v) \mid v = i\epsilon, c \leq u(v), \dots \right]
+  \end{align*}
+
+  Payment When Participating
+  \begin{align*}
+    p(v) = u(v) - v x(v) = k\epsilon^2 - i \cdot \epsilon \cdot j \cdot \epsilon = (i \cdot j - k) \epsilon^2
+  \end{align*}
+
+  \footnotetext[1]{$\bar{F}'_i$ is the distribution of the participation cost conditional on the value being $i\epsilon$}
+\end{frame}
+
+\begin{frame}{Recursive Step}
+  \textbf{Recursion Step:}
+  Let $i \geq 2$.
+  \begin{align*}
+    R(i,j,k) = \max_{j' \leq j} R(i-1, j', k-j) + q_i \cdot \bar{F_i}'(k \cdot \epsilon^2) \cdot (i\cdot j - k) \epsilon^2
+  \end{align*}
+\end{frame}
+
+\begin{frame}{Recursive Formula}
+  Let $R(i,j,k)$ be the optimal revenue, when
+  \begin{itemize}
+    \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
+    \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
+    \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
+  \end{itemize}
+
+  \textbf{Base case:}
+  For $i = 1$ we have
+  \begin{itemize}
+    \item $R(1,j,k) = 0$ for any $k \leq j$
+    \item $R(1,j,k) = -\infty$ for $k > j$
+  \end{itemize}
+
+  \textbf{Recursion Step:}
+  For $i \geq 2$, we have
+  \begin{align*}
+    R(i,j,k) = \max_{j' \leq j} R(i-1, j', k-j) + q_i \cdot \bar{F_i}'(k \cdot \epsilon^2)\cdot (i \cdot j - k)\epsilon^2
+  \end{align*}
+\end{frame}
+
+\begin{frame}{FPTAS Algorithm}
+  Optimal revenue $\mathcal{M}'$ on discretized value and allocation function space:
+  \begin{align*}
+    \max_{\mathcal{M}'} \mathbf{E}\left[p(v)\right] = \max_{j,k} R(1/\epsilon, j, k)
+  \end{align*}
+
+  \begin{theorem}[\citeauthor{primary}]
+    For any distribution $\bar{F}$ supported on $[0,1]^2$, for any $\epsilon \in (0,1)$ the algorithm computes a mechanism with revenue of at least $OPT(\bar{F}) - 4\epsilon$ in $O(\frac{1}{\epsilon^5})$ time.
+  \end{theorem}
+\end{frame}
 
 \end{document}
