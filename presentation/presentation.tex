@@ -14,6 +14,7 @@
 \begin{document}
 \maketitle
 \section{Introductory Example}
+\section{Problem Statement}
 \begin{frame}{Problem Statement}
   \begin{itemize}
     \item Set $\mathcal{N}$ of $n$ players
@@ -21,16 +22,17 @@
     \item Each agent $i \in \mathcal{N}$ has
           \begin{itemize}
             \item private valuation $v_i: \mathcal{X} \rightarrow \mathbb{R}$
-            \item a set of possible bids $B_i$
             \item<2-> \alert{private participation cost $c_i: \mathbb{R}$}
           \end{itemize}
-    \item $B = B_1 \times \dots \times B_n$ set of all bids
-    \item Mechanism $\mathcal{M} = (f,p)$
+    \item Mechanism $\mathcal{M} = (x,p)$
           \begin{itemize}
-            \item $f: B \rightarrow \mathcal{X}$ Allocation function
-            \item $p: B \rightarrow \mathbb{R}^n$ Payment function
+            \item $x: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \mathcal{X}$ Allocation function
+            \item $p: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \mathbb{R}^n$ Payment function
           \end{itemize}
-    \item Utility $u_i^M(b) = v_i(f(b)) - p_i(b) \only<2->{\alert{-c_i}}$
+    \item Utility 
+          \begin{align*}
+            u_i^M(v_i\only<2>{, c_i}) = \alt<1>{v_i(x(v_i)) - p_i(v_i)}{\begin{cases}v_i(x(v_i, c_i)) - p_i(v_i, c_i) - \alert{c_i} & \text{i participates} \\ 0 & \text{otherwise}\end{cases}}
+          \end{align*}
   \end{itemize}
 \end{frame}
 \begin{frame}{Single Item Auction - Known Distributions}
@@ -72,7 +74,7 @@
   \begin{lemma}[\cite{myerson}]
     For single parameter environments, an allocation rule $x$ is implementable if and only if it is monotone.
     If $x$ is monotone, then there exists a unique payment rule $p$, s.t. the mechanism $M=(x,p)$ is truthful
-    and given by:
+    and $p$ is given by:
     \begin{align*}
       p_i(v) = v_i x_i(v) - \int_0^{v_i} x_i(t,v_{-i})dt + p_0
     \end{align*}
@@ -112,7 +114,7 @@
     \end{align*}
   \end{theorem}
 
-  Maybe also add proof / proof idea for truthfulness and
+  Maybe also add proof / proof idea for truthfulness of resulting $\mathcal{M}$
 \end{frame}
 
 \begin{frame}{Expected Revenue - Private Cost - Proof}
@@ -231,7 +233,7 @@
   \only<2>{
     \begin{itemize}
       \item $u(v') = (k-j)\epsilon^2$
-      \item $x(v') \leq j \epsilon$ (lower values should not be allocated more)
+      \item $x(v') \leq j \epsilon$ (x should be monotone)
     \end{itemize}
     \begin{align*}
         & \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]                    \\
@@ -313,5 +315,63 @@
     For any distribution $\bar{F}$ supported on $[0,1]^2$, for any $\epsilon \in (0,1)$ the algorithm computes a mechanism with revenue of at least $OPT(\bar{F}) - 4\epsilon$ in $O(\frac{1}{\epsilon^5})$ time.
   \end{theorem}
 \end{frame}
+
+\begin{frame}{FPTAS Algorithm - Proof}
+  \textbf{Proof.}\\
+  \begin{align*}
+    \mathrm{Rev}(\bar{F}, \mathcal{M}') &\geq \mathrm{Rev}(\bar{F}', \mathcal{M}') 
+    \only<2-> {
+      \\ &\geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon = \mathrm{OPT}(\bar{F}') - \epsilon
+    }
+    \only<3>{
+      \\ &\geq \mathrm{OPT}(\bar{F}) - 4 \epsilon 
+    }
+  \end{align*}
+
+  \only<3>{\qed}
+
+  \only<2> {
+    Where $\widehat{\mathcal{M}}$ is the optimal mechanism on $\bar{F}'$ (allocation rule not necessarily discretized).
+  }
+
+  \only<2>{
+    \begin{lemma}[\cite{primary}]
+      For any distribution $\bar{F}$ supported on $[0,1]^2$ and for any pair of mechanisms $\mathcal{M}'$ and $\widehat{\mathcal{M}}$
+      with allocation rules $x'$ and $\hat{x}$, s.t. $x'(v) \in [\hat{x}(v), \hat{x}(v) + \epsilon]$ for all $\epsilon$, we have $\mathrm{Rev}(\bar{F}, \mathcal{M}') \geq \mathrm{Rev}(\bar{F}, \widehat{\mathcal{M}}) - \epsilon$.
+    \end{lemma}
+  }
+
+  \only<3>{
+    \begin{lemma}[\cite{primary}]
+      Let $(\Omega, \mathcal{F}, P)$ be any probability measure and let $t_1, t_2: \Omega \rightarrow \mathbb{R}^2$ be two 2-dimensional random variables.
+      If $\sup_{\omega \in \Omega} || t_1(\omega) - t_2(\omega) ||_\infty \leq \epsilon$, then $|\mathrm{OPT}(t_1) - \mathrm{OPT}(t_2)| \leq 3\epsilon$.
+    \end{lemma}
+  }
+\end{frame}
+
+\section{Multiple Buyers}
+
+\begin{frame}{Multiple Buyers}
+  How can we use the single buyer mechanism for multiple buyers ? 
+  \textbf{Idea: Ex-Ante Allocation Constraints}
+  \begin{itemize}
+    \item Restrict each mechanism to only allocate the item to buyer $i$ in expectation with probability $q_i$
+    \item Approach each buyer sequentially and execute restricted mechanism (as long as not yet sold)
+  \end{itemize}
+
+  $\Rightarrow$ Sequential-opt-out mechanism
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}{Conclusion}
+  \begin{itemize}
+    \item Generalize single item auction to use private costs
+    \item Characterize truthful mechanism
+    \item Derived expected revenue for such a mechanism
+    \item Due to non-convexity, FPTAS to optimize revenue
+    \item Use generalized FPTAS for sequential-opt-out mechanism in multiple buyers case
+  \end{itemize}
+\end{frame}
+
 
 \end{document}
