@@ -29,7 +29,7 @@
             \item $x: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \mathcal{X}$ Allocation function
             \item $p: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \mathbb{R}^n$ Payment function
           \end{itemize}
-    \item Utility 
+    \item Utility
           \begin{align*}
             u_i^M(v_i\only<2>{, c_i}) = \alt<1>{v_i(x(v_i)) - p_i(v_i)}{\begin{cases}v_i(x(v_i, c_i)) - p_i(v_i, c_i) - \alert{c_i} & \text{i participates} \\ 0 & \text{otherwise}\end{cases}}
           \end{align*}
@@ -89,15 +89,39 @@
 \begin{frame}{Truthful Mechanism - Private Cost}
   Given any single parameter mechanism $\mathcal{M} = (x,p)$ (without respecting private cost $c$).
 
-  \begin{align*}
-    v_x(c) & = \inf_{v \in \mathbb{R}_{\geq 0}} \{\underbrace{v x(v) - p(v)}_{u^M(v)} \geq c\} \\
-    x_c(v) & = \begin{cases}
-                 x(v) & v \geq v_x(c) \\
-                 0    & v < v_x(c)
-               \end{cases}
-  \end{align*}
+  \begin{columns}
 
-  Visualize $v_x$ and $x_c$ here.
+    \begin{column}{.5\textwidth}
+
+      \begin{align*}
+        v_x(c) & = \inf_{v \in \mathbb{R}_{\geq 0}} \{\underbrace{v x(v) - p(v)}_{u^M(v)} \geq c\} \\
+        x_c(v) & = \begin{cases}
+                     x(v) & v \geq v_x(c) \\
+                     0    & v < v_x(c)
+                   \end{cases}
+      \end{align*}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \begin{tikzpicture}
+        \draw (0,0) -- (2.5,0) node[right] {\( c \)};
+        \draw (0,0) -- (0,2.5) node[above] {\( v_x(c) \)};
+
+        \draw[thick,domain=0:2] plot (\x,{0.5+\x});
+      \end{tikzpicture}
+
+      \begin{tikzpicture}
+        \draw (0,0) -- (2.5,0) node[right] {\( v \)};
+        \draw (0,0) -- (0,1.5) node[above] {\( x_c(v) \)};
+        \draw[thick] (0,0) -- (1.5,0);
+        \draw[thick] (1.5,1) -- (3,1);
+        \draw[dashed] (1.5,0) -- (1.5,1);
+        \node[below] at (1.5,0) {\( v_x(c) \)};
+        \node[left] at (0,1) {\( 1 \)};
+      \end{tikzpicture}
+
+    \end{column}
+  \end{columns}
+
 \end{frame}
 
 \begin{frame}{Expected Revenue - Private Cost}
@@ -319,12 +343,12 @@
 \begin{frame}{FPTAS Algorithm - Proof}
   \textbf{Proof.}\\
   \begin{align*}
-    \mathrm{Rev}(\bar{F}, \mathcal{M}') &\geq \mathrm{Rev}(\bar{F}', \mathcal{M}') 
+    \mathrm{Rev}(\bar{F}, \mathcal{M}') & \geq \mathrm{Rev}(\bar{F}', \mathcal{M}')
     \only<2-> {
-      \\ &\geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon = \mathrm{OPT}(\bar{F}') - \epsilon
+    \\ &\geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon = \mathrm{OPT}(\bar{F}') - \epsilon
     }
     \only<3>{
-      \\ &\geq \mathrm{OPT}(\bar{F}) - 4 \epsilon 
+    \\ &\geq \mathrm{OPT}(\bar{F}) - 4 \epsilon
     }
   \end{align*}
 
@@ -352,7 +376,7 @@
 \section{Multiple Buyers}
 
 \begin{frame}{Multiple Buyers}
-  How can we use the single buyer mechanism for multiple buyers ? 
+  How can we use the single buyer mechanism for multiple buyers ?
   \textbf{Idea: Ex-Ante Allocation Constraints}
   \begin{itemize}
     \item Restrict each mechanism to only allocate the item to buyer $i$ in expectation with probability $q_i$
