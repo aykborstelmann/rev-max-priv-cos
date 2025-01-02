@@ -141,6 +141,25 @@
   Maybe also add proof / proof idea for truthfulness of resulting $\mathcal{M}$
 \end{frame}
 
+\begin{frame}{Expected Revenue - Private Cost - Example}
+  \begin{example}
+    For $c = 0$, i.e., $G$, s.t. $\mathbf{Pr}_{c \sim G}[c = 0] = 1$ and $p_0 = 0$:
+  \end{example}
+
+  Then 
+  \begin{itemize}
+    \item $\varphi_c(v) = \varphi(v)$
+    \item $\bar{F}_c(v) = \bar{F}(v)$
+    \item $\mathbf{E}_{v \sim F}\left[x_0(v) \varphi(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$  
+    (individual rationality if $p_0 = 0$)
+  \end{itemize}
+
+  \begin{align*}
+    \Rightarrow&\mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \underbrace{\max\{-p_0,c\}}_{=0}\right] \\
+    =&\mathbf{E}_{v \sim \bar{F}}\left[x(v) \varphi(v)\right]
+  \end{align*}
+\end{frame}
+
 \begin{frame}{Expected Revenue - Private Cost - Proof}
   \textbf{Proof.}\\
 
