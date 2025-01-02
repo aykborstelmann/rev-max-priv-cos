@@ -217,29 +217,39 @@
 
   \textbf{Idea}:
   \begin{itemize}
-    \item Discretize value $v$'s space normed to $[0,1]$ and allocation function $x$'s space.
-    \item Calculate optimal mechanism, i.e. optimal allocation $x(v)$ and each $v$.
+    \item Norm $v$ to $[0,1]$
+    \item Discretize value $v$'s and allocation function $x$'s space.
+    \item Calculate optimal mechanism, i.e. optimal allocation $x(v)$ for each $v$.
   \end{itemize}
 
 \end{frame}
 
-\begin{frame}{FPTAS Algorithm - Formalism}
+\begin{frame}{FPTAS Algorithm - Dynamic Programming}
+  For $v \in [0,1]$
   \begin{itemize}
     \item Let $\epsilon \in (0,1)$ (discretization degree).
     \item Let $\bar{F}'$ be type distribution of $\bar{F}$ with \textbf{value} rounded down to nearest multiple of $\epsilon$.
   \end{itemize}
+
+  Then
+
+  \begin{align*}
+    \max_{\mathcal{M}'} \mathbf{E}_{t \sim \bar{F}'}\left[p(v)\right] & = \max_{j, k} \mathbf{E}_{t \sim \bar{F}'}\left[p(v) \mid v \leq 1, x(1) = j\epsilon, u(1) = k \epsilon^2\right] \\
+                                                                      & = \max_{j, k} R(1 / \epsilon, j, k)
+  \end{align*}
 \end{frame}
 
 \begin{frame}{Recursive Formula}
-  Let $R(i,j,k)$ be the optimal revenue, when
+  \begin{align*}
+    \max_x \mathbf{E}[p(v) \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2] = R(i,j,k)
+  \end{align*}
+
+  Where $R(i,j,k)$ be the optimal revenue, when
   \begin{itemize}
     \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
     \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
     \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
   \end{itemize}
-  \begin{align*}
-    \Rightarrow R(i,j,k) = \max_x \mathbf{E}[p(v) \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2]
-  \end{align*}
 
   \textbf{Base case:}
   For $i = 1$ we have
@@ -253,35 +263,32 @@
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
-     & R(i,j,k)                                                                                                                                                               \\
-     & = \max_x \mathbf{E}[p(v) \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2]                                                                 \\
-     & = \alert<2>{\max_x \mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]}                                    \\
-     & + \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, \dots ] \mathbf{E}\left[p(v) \mid v = i\epsilon, x(i\epsilon) = j\epsilon, \dots \right]
+     & R(i,j,k)                                                                                                                                               \\
+     & = \max_x \mathbf{E}\left[p(v) \mid v \leq i \epsilon, \mathcolor{gray}{x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2}\right]                    \\
+     & = \alert<2>{\max_x \mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, \mathcolor{gray}{\dots} \right]}                                                 \\
+     & + \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, \mathcolor{gray}{\dots} ] \mathbf{E}\left[p(v) \mid v = i\epsilon, \mathcolor{gray}{\dots} \right]
   \end{align*}
 \end{frame}
 
 \begin{frame}{Recursive Step - Lower Value}
   \begin{align*}
-    \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]
+    \alert{\max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]} = \max_x R(i-1, ?, ?)
   \end{align*}
-  For $v' = (i-1)\epsilon$:
+
+  \begin{itemize}
+    \item $u((i-1)\epsilon) = \alt<1>{?}{(k-j)\epsilon^2}$
+    \only<2>{\item $x((i-1) \epsilon) \leq x(i \epsilon) = j \epsilon$ (x should be monotone)}
+  \end{itemize}
   \only<1>{
     \begin{align*}
-      u(i\epsilon)     & = \int_0^{i \epsilon} x(t)dt - p_0 = \underbrace{\int_0^{(i-1) \epsilon} x(t)dt - p_0}_{u((i-1)\epsilon)} + \int_{(i-1)\epsilon}^{i\epsilon} \underbrace{x(t)}_{\text{const}}dt \\
-                       & = u((i-1)\epsilon) + \epsilon x(i\epsilon) = u((i-1)\epsilon) + j \epsilon^2                                                                                                    \\
-                       & \Leftrightarrow                                                                                                                                                                 \\
+      u(i\epsilon)     & = u((i-1)\epsilon) + \epsilon x(i\epsilon) = u((i-1)\epsilon) + j \epsilon^2 \\
+                       & \Leftrightarrow                                                              \\
       u((i-1)\epsilon) & = u(i\epsilon) - j \epsilon^2 = k \epsilon2 - j \epsilon^2= (k-j)\epsilon^2
     \end{align*}
   }
   \only<2>{
-    \begin{itemize}
-      \item $u(v') = (k-j)\epsilon^2$
-      \item $x(v') \leq j \epsilon$ (x should be monotone)
-    \end{itemize}
     \begin{align*}
         & \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]                    \\
-      = & \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x((i-1)\epsilon) \leq j\epsilon, u((i-1)\epsilon) = (k-j)\epsilon^2 \right]     \\
-      = & \max_{j' \leq j}\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x((i-1)\epsilon) = j'\epsilon, u(i\epsilon) = (k-j)\epsilon^2 \right] \\
       = & \max_{j' \leq j} R(i-1, j', k-j)                                                                                                         \\
     \end{align*}
   }
@@ -293,7 +300,7 @@
   \begin{align*}
      & R(i,j,k)                                                                                                                                                                          \\
      & = \max_{j' \leq j} R(i-1, j', k-j)                                                                                                                                                \\
-     & + \alert<2>{\mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, \dots ] \mathbf{E}\left[p(v) \mid v = i\epsilon, x(i\epsilon) = j\epsilon, \dots \right]}
+     & + \alert<2>{\mathbf{Pr}\left[v = i\epsilon \mid v \leq i \epsilon, \mathcolor{gray}{\dots} \right] \mathbf{E}\left[p(v) \mid v = i\epsilon, \mathcolor{gray}{\dots} \right]}
   \end{align*}
 \end{frame}
 
