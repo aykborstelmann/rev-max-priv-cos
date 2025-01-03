@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \usepackage[style=authoryear]{biblatex}
 \usepackage{mathtools}
+\usepackage{tikz,pgfplots}
 \addbibresource{references.bib} 
 \usetheme{metropolis}
 \title{Revenue Maximization for Buyers with Costly Participation}
@@ -137,17 +138,17 @@
     For $c = 0$, i.e., $G$, s.t. $\mathbf{Pr}_{c \sim G}[c = 0] = 1$ and $p_0 = 0$:
   \end{example}
 
-  Then 
+  Then
   \begin{itemize}
     \item $\varphi_c(v) = \varphi(v)$
     \item $\bar{F}_c(v) = \bar{F}(v)$
-    \item $\mathbf{E}_{v \sim F}\left[x_0(v) \varphi(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$  
-    (individual rationality if $p_0 = 0$)
+    \item $\mathbf{E}_{v \sim F}\left[x_0(v) \varphi(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$
+          (individual rationality if $p_0 = 0$)
   \end{itemize}
 
   \begin{align*}
-    \Rightarrow&\mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \underbrace{\max\{-p_0,c\}}_{=0}\right] \\
-    =&\mathbf{E}_{v \sim \bar{F}}\left[x(v) \varphi(v)\right]
+    \Rightarrow & \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \underbrace{\max\{-p_0,c\}}_{=0}\right] \\
+    =           & \mathbf{E}_{v \sim \bar{F}}\left[x(v) \varphi(v)\right]
   \end{align*}
 \end{frame}
 
@@ -220,14 +221,48 @@
   \begin{itemize}
     \item Let $\epsilon \in (0,1)$ (discretization degree).
     \item Let $\bar{F}'$ be type distribution of $\bar{F}$ with \textbf{value} rounded down to nearest multiple of $\epsilon$.
+    \item Round allocation function down to the nearest multiple of $\epsilon$
   \end{itemize}
 
-  Then
+  \alt<4>{
+    Then
 
-  \begin{align*}
-    \max_{\mathcal{M}'} \mathbf{E}_{t \sim \bar{F}'}\left[p(v)\right] & = \max_{j, k} \mathbf{E}_{t \sim \bar{F}'}\left[p(v) \mid v \leq 1, x(1) = j\epsilon, u(1) = k \epsilon^2\right] \\
-                                                                      & = \max_{j, k} R(1 / \epsilon, j, k)
-  \end{align*}
+    \begin{align*}
+      \max_{\mathcal{M}'} \mathbf{E}_{t \sim \bar{F}'}\left[p(v)\right] & = \max_{j, k} \mathbf{E}_{t \sim \bar{F}'}\left[p(v) \mid v \leq 1, x(1) = j\epsilon, u(1) = k \epsilon^2\right] \\
+                                                                        & = \max_{j, k} R(1 / \epsilon, j, k)
+    \end{align*}
+  }{
+    \begin{center}
+      \begin{tikzpicture}[>=latex]
+        \begin{axis}[
+            width=.5\textwidth,
+            height=.5\textwidth,
+            xlabel={$v$},
+            ylabel={$x(v)$},
+            grid=major,
+            xtick={0,0.4,0.6,0.8,1},
+            ytick={0,0.4,0.6,0.8,1},
+            extra x ticks={0.2},
+            extra x tick labels={$\epsilon$},
+            extra y ticks={0.2},
+            extra y tick labels={$\epsilon$},
+            xmin=0, xmax=1, ymin=0, ymax=1,
+            domain=0:1,
+          ]
+          % Horizontal line at y = 0.2
+          \addplot[blue] {x^2};
+
+          \only<2->{
+            \addplot[domain=0:1,thick,dotted,samples=1000] {floor(5*x) / 5)^2};
+          }
+
+          \only<3->{
+            \addplot[domain=0:1,thick,samples=1000] {floor(5*(floor(5*x) / 5)^2)/5};
+          }
+        \end{axis}
+      \end{tikzpicture}
+    \end{center}
+  }
 \end{frame}
 
 \begin{frame}{Recursive Formula}
@@ -268,7 +303,7 @@
 
   \begin{itemize}
     \item $u((i-1)\epsilon) = \alt<1>{?}{(k-j)\epsilon^2}$
-    \only<2>{\item $x((i-1) \epsilon) \leq x(i \epsilon) = j \epsilon$ (x should be monotone)}
+          \only<2>{\item $x((i-1) \epsilon) \leq x(i \epsilon) = j \epsilon$ (x should be monotone)}
   \end{itemize}
   \only<1>{
     \begin{align*}
@@ -279,8 +314,8 @@
   }
   \only<2>{
     \begin{align*}
-        & \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]                    \\
-      = & \max_{j' \leq j} R(i-1, j', k-j)                                                                                                         \\
+        & \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right] \\
+      = & \max_{j' \leq j} R(i-1, j', k-j)                                                                                      \\
     \end{align*}
   }
 \end{frame}
@@ -289,10 +324,53 @@
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
-     & R(i,j,k)                                                                                                                                                                          \\
-     & = \max_{j' \leq j} R(i-1, j', k-j)                                                                                                                                                \\
+     & R(i,j,k)                                                                                                                                                                     \\
+     & = \max_{j' \leq j} R(i-1, j', k-j)                                                                                                                                           \\
      & + \alert<2>{\mathbf{Pr}\left[v = i\epsilon \mid v \leq i \epsilon, \mathcolor{gray}{\dots} \right] \mathbf{E}\left[p(v) \mid v = i\epsilon, \mathcolor{gray}{\dots} \right]}
   \end{align*}
+
+  \only<1>{
+    \begin{center}
+      \begin{tikzpicture}[
+          node/.style={circle, draw=black, fill=gray!20, scale=.4},
+          axis/.style={->, thick},
+          gridline/.style={gray, dashed}
+        ]
+
+        \draw[axis] (0, 0) -- (3.5, 0) node[right] {$i$};
+        \draw[axis] (0, 0) -- (0, 3.5) node[above] {$j$};
+
+        \foreach \x in {1, 2, 3} {
+            \draw[gridline] (\x, 0) -- (\x, 3.5);
+            \draw[gridline] (0, \x) -- (3.5, \x);
+          }
+
+        \foreach \i in {1, 2, 3} {
+            \foreach \j in {1, 2, 3} {
+                \ifthenelse{\i=3\and\j=2}
+                {
+                  \node[node, fill=green!20] at (\i, \j) {$R(\i,\j,k)$};
+                }
+                {
+                  \ifthenelse{\i=2\and\j<3}
+                  {
+                    \node[node, fill=blue!20] at (\i, \j) {$R(\i,\j,k)$};
+                  }
+                  {
+                    \node[node] at (\i, \j) {$R(\i,\j,k)$};
+                  }
+                }
+              }
+          }
+
+        \node at (0, 0) [below left] {0};
+        \foreach \x in {1, 2, 3, 3} {
+            \node at (0, \x) [left] {\x};
+            \node at (\x, 0) [below] {\x};
+          }
+      \end{tikzpicture}
+    \end{center}
+  }
 \end{frame}
 
 \begin{frame}{Recursive Step - Exact value}
@@ -325,25 +403,71 @@
 \end{frame}
 
 \begin{frame}{Recursive Formula}
-  Let $R(i,j,k)$ be the optimal revenue, when
-  \begin{itemize}
-    \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
-    \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
-    \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
-  \end{itemize}
+  \begin{columns}
+    \begin{column}{.6\textwidth}
+      Let $R(i,j,k)$ be the optimal revenue, when
+      \begin{itemize}
+        \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
+        \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
+        \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
+      \end{itemize}
 
-  \textbf{Base case:}
-  For $i = 1$ we have
-  \begin{itemize}
-    \item $R(1,j,k) = 0$ for any $k \leq j$
-    \item $R(1,j,k) = -\infty$ for $k > j$
-  \end{itemize}
+      \textbf{Base case:}
+      For $i = 1$ we have
+      \begin{itemize}
+        \item $R(1,j,k) = 0$ for any $k \leq j$
+        \item $R(1,j,k) = -\infty$ for $k > j$
+      \end{itemize}
 
-  \textbf{Recursion Step:}
-  For $i \geq 2$, we have
-  \begin{align*}
-    R(i,j,k) = \max_{j' \leq j} R(i-1, j', k-j) + q_i \cdot \bar{F_i}'(k \cdot \epsilon^2)\cdot (i \cdot j - k)\epsilon^2
-  \end{align*}
+      \textbf{Recursion Step:}
+      For $i \geq 2$, we have
+      \begin{align*}
+        R(i,j,k) = & \max_{j' \leq j} R(i-1, j', k-j) \\ &+ q_i \cdot \bar{F_i}'(k \cdot \epsilon^2)\cdot (i \cdot j - k)\epsilon^2
+      \end{align*}
+    \end{column}
+    \begin{column}{.4\textwidth}
+      \begin{center}
+        \begin{tikzpicture}[
+            node/.style={circle, draw=black, fill=gray!20, scale=.4},
+            axis/.style={->, thick},
+            gridline/.style={gray, dashed}
+          ]
+
+          \draw[axis] (0, 0) -- (3.5, 0) node[right] {$i$};
+          \draw[axis] (0, 0) -- (0, 3.5) node[above] {$j$};
+
+          \foreach \x in {1, 2, 3} {
+              \draw[gridline] (\x, 0) -- (\x, 3.5);
+              \draw[gridline] (0, \x) -- (3.5, \x);
+            }
+
+          \foreach \i in {1, 2, 3} {
+              \foreach \j in {1, 2, 3} {
+                  \ifthenelse{\i=3\and\j=2}
+                  {
+                    \node[node, fill=green!20] at (\i, \j) {$R(\i,\j,k)$};
+                  }
+                  {
+                    \ifthenelse{\i=2\and\j<3}
+                    {
+                      \node[node, fill=blue!20] at (\i, \j) {$R(\i,\j,k)$};
+                    }
+                    {
+                      \node[node] at (\i, \j) {$R(\i,\j,k)$};
+                    }
+                  }
+                }
+            }
+
+          \node at (0, 0) [below left] {0};
+          \foreach \x in {1, 2, 3, 3} {
+              \node at (0, \x) [left] {\x};
+              \node at (\x, 0) [below] {\x};
+            }
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{FPTAS Algorithm}
