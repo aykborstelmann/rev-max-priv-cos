@@ -16,40 +16,29 @@
 \section{Introductory Example}
 \section{Problem Statement}
 \begin{frame}{Problem Statement}
+  \only<1>{Recall single item auction ...}
   \begin{itemize}
-    \item Set $\mathcal{N}$ of $n$ players
-    \item Set $\mathcal{X}$ of outcomes
-    \item Each agent $i \in \mathcal{N}$ has
+    \item Set $\mathcal{N}$ of $n$ buyers
+    \item An item to sell
+    \item Each buyer $i \in \mathcal{N}$ has
           \begin{itemize}
-            \item private valuation $v_i: \mathcal{X} \rightarrow \mathbb{R}$
+            \item private valuation $v_i: \mathbb{R}$
             \item<2-> \alert{private participation cost $c_i: \mathbb{R}$}
           \end{itemize}
     \item Mechanism $\mathcal{M} = (x,p)$
           \begin{itemize}
-            \item $x: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \mathcal{X}$ Allocation function
+            \item $x: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \{0,1\}^n$ Allocation function
             \item $p: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \mathbb{R}^n$ Payment function
           \end{itemize}
     \item Utility
           \begin{align*}
-            u_i^M(v_i\only<2>{, c_i}) = \alt<1>{v_i(x(v_i)) - p_i(v_i)}{\begin{cases}v_i(x(v_i, c_i)) - p_i(v_i, c_i) - \alert{c_i} & \text{i participates} \\ 0 & \text{otherwise}\end{cases}}
+            u_i(v_i\only<2>{, c_i}) = \alt<1>{v_i x_i(v_i) - p_i(v_i)}{\begin{cases}v_i x_i(v_i, c_i) - p_i(v_i, c_i) - \alert{c_i} & \text{i participates} \\ 0 & \text{otherwise}\end{cases}}
           \end{align*}
   \end{itemize}
+  \only<2>{
+    Call $t_i = (v_i, c_i) \sim \bar{F}_i$ the type of a player.
+  }
 \end{frame}
-\begin{frame}{Single Item Auction - Known Distributions}
-  Each buyer $i \in \mathcal{N}$ has ...
-  \begin{itemize}
-    \item private valuation $v_i \geq 0$ for getting the item\\
-          marginal distribution: $F_i$\\
-          density: $f_i$
-    \item private cost $c_i \in \mathbb{R}$ for participating in the mechanism \\
-          marginal distribution: $G_i$ \\
-          density: $g_i$.
-  \end{itemize}
-  $t_i = (v_i, c_i)$ is the private type of player $i$, prior distribution $\bar{F}_i$.
-
-  $\bar{F} = \bar{F}_1 \times \dots \times \bar{F}_n$.
-\end{frame}
-
 \section{Single Buyer - Expected Revenue \& Incentive Compatible}
 
 \begin{frame}{Expected Revenue - Myerson}
