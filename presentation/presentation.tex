@@ -42,37 +42,26 @@
 \section{Single Buyer - Expected Revenue \& Incentive Compatible}
 
 \begin{frame}{Expected Revenue - Myerson}
-  \begin{lemma}[\cite{myerson}]
+  \begin{lemma}[\cite{myerson}, Single Buyer]
     Let $\mathcal{M}=(x,p)$ be a truthful single-parameter mechanism, then the expected revenue equals the expected virtual welfare. That is
     \begin{align*}
-      \mathbf{E}_v\left[\sum_{i \in \mathcal{N}}p_i(v)\right]
-      = \mathbf{E}_v\left[\sum_{i \in \mathcal{N}}x_i(v)\varphi_i(v_i)\right] + n p_0
+      \mathbf{E}_v\left[p(v)\right]
+      = \mathbf{E}_v\left[x(v)\varphi(v)\right] + p_0
     \end{align*}
 
-    where $\varphi_i(t) = t - \frac{1 - F_i(t)}{f_i(t)}$
+    where $\varphi(t) = t - \frac{1 - F(t)}{f(t)}$
   \end{lemma}
-
-  For single item single buyer:
-  \begin{align*}
-    \mathbf{E}_v\left[p(v)\right]
-    = \mathbf{E}_v\left[x(v)\varphi(v)\right] + p_0
-  \end{align*}
 \end{frame}
 
 \begin{frame}{Truthful Mechanism - Myerson}
-  \begin{lemma}[\cite{myerson}]
+  \begin{lemma}[\cite{myerson}, Single Buyer]
     For single parameter environments, an allocation rule $x$ is implementable if and only if it is monotone.
     If $x$ is monotone, then there exists a unique payment rule $p$, s.t. the mechanism $M=(x,p)$ is truthful
     and $p$ is given by:
     \begin{align*}
-      p_i(v) = v_i x_i(v) - \int_0^{v_i} x_i(t,v_{-i})dt + p_0
+      p(v) = v x(v) - \int_0^v x(t) dt + p_0
     \end{align*}
   \end{lemma}
-
-  For single item single buyer:
-  \begin{align*}
-    p(v) = v x(v) - \int_0^v x(t) dt + p_0
-  \end{align*}
 \end{frame}
 
 \begin{frame}{Truthful Mechanism - Private Cost}
