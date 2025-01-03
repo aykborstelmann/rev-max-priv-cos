@@ -23,8 +23,8 @@
     \item An item to sell
     \item Each buyer $i \in \mathcal{N}$ has
           \begin{itemize}
-            \item private valuation $v_i: \mathbb{R}$
-            \item<2-> \alert{private participation cost $c_i: \mathbb{R}$}
+            \item private valuation $v_i \in \mathbb{R}$
+            \item<2-> \alert{private participation cost $c_i \in \mathbb{R}$}
           \end{itemize}
     \item Mechanism $\mathcal{M} = (x,p)$
           \begin{itemize}
@@ -40,19 +40,7 @@
     Call $t_i = (v_i, c_i) \sim \bar{F}_i$ the type of a player.
   }
 \end{frame}
-\section{Single Buyer - Expected Revenue \& Incentive Compatible}
-
-\begin{frame}{Expected Revenue - Myerson}
-  \begin{lemma}[\cite{myerson}, Single Buyer]
-    Let $\mathcal{M}=(x,p)$ be a truthful single-parameter mechanism, then the expected revenue equals the expected virtual welfare. That is
-    \begin{align*}
-      \mathbf{E}_v\left[p(v)\right]
-      = \mathbf{E}_v\left[x(v)\varphi(v)\right] + p_0
-    \end{align*}
-
-    where $\varphi(t) = t - \frac{1 - F(t)}{f(t)}$
-  \end{lemma}
-\end{frame}
+\section{Single Buyer - Incentive Compatible \& Expected Revenue}
 
 \begin{frame}{Truthful Mechanism - Myerson}
   \begin{lemma}[\cite{myerson}, Single Buyer]
@@ -66,12 +54,32 @@
 \end{frame}
 
 \begin{frame}{Truthful Mechanism - Private Cost}
-  Given any single parameter mechanism $\mathcal{M} = (x,p)$ (without respecting private cost $c$).
+  \begin{lemma}[\cite{primary}]
+    It is without loss for seller to commit to a truthful single parameter mechanism $\mathcal{M}=(x,p)$ and
+    for the buyer to participate and truthfully reveal v if and only if $u^\mathcal{M}(v) = \int_0^v x(z)dz - p_0 \geq c$.
+  \end{lemma}
+  (Without proof.)
+\end{frame}
+
+\begin{frame}{Expected Revenue - Myerson}
+  \begin{lemma}[\cite{myerson}, Single Buyer]
+    Let $\mathcal{M}=(x,p)$ be a truthful single-parameter mechanism, then the expected revenue equals the expected virtual welfare. That is
+    \begin{align*}
+      \mathbf{E}_v\left[p(v)\right]
+      = \mathbf{E}_v\left[x(v)\varphi(v)\right] + p_0
+    \end{align*}
+
+    where $\varphi(t) = t - \frac{1 - F(t)}{f(t)}$
+  \end{lemma}
+\end{frame}
+
+\begin{frame}{Truthful Mechanism - Private Cost}
+  Given any single parameter truthful mechanism $\mathcal{M} = (x,p)$ (without respecting private cost $c$).
 
   \begin{columns}
     \begin{column}{.5\textwidth}
       \begin{align*}
-        v_x(c) & = \inf_{v \in \mathbb{R}_{\geq 0}} \{\underbrace{v x(v) - p(v)}_{u(v)} \geq c\} \\
+        v_x(c) & = \inf_{v \in \mathbb{R}_{\geq 0}} \{\underbrace{v x(v) - p(v)}_{u^\mathcal{M}(v)} \geq c\} \\
       \end{align*}
     \end{column}
     \begin{column}{.5\textwidth}
@@ -129,8 +137,6 @@
       \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \max\{-p_0,c\}\right]
     \end{align*}
   \end{theorem}
-
-  Maybe also add proof / proof idea for truthfulness of resulting $\mathcal{M}$
 \end{frame}
 
 \begin{frame}{Expected Revenue - Private Cost - Example}
@@ -142,7 +148,7 @@
   \begin{itemize}
     \item $\varphi_c(v) = \varphi(v)$
     \item $\bar{F}_c(v) = \bar{F}(v)$
-    \item $\mathbf{E}_{v \sim F}\left[x_0(v) \varphi(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$
+    \item $\mathbf{E}_{v \sim F}\left[x_c(v) \varphi(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$
           (individual rationality if $p_0 = 0$)
   \end{itemize}
 
@@ -265,17 +271,16 @@
   }
 \end{frame}
 
-\begin{frame}{Recursive Formula}
-  \begin{align*}
-    \max_x \mathbf{E}[p(v) \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2] = R(i,j,k)
-  \end{align*}
-
+\begin{frame}{Dynamic Programming - Recursive Formula}
   Where $R(i,j,k)$ be the optimal revenue, when
   \begin{itemize}
     \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
     \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
     \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
   \end{itemize}
+  \begin{align*}
+    \max_x \mathbf{E}[p(v) \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2] = R(i,j,k)
+  \end{align*}
 
   \textbf{Base case:}
   For $i = 1$ we have
@@ -285,7 +290,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Recursive Step}
+\begin{frame}{Dynamic Programming - Recursive Step}
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
@@ -296,7 +301,7 @@
   \end{align*}
 \end{frame}
 
-\begin{frame}{Recursive Step - Lower Value}
+\begin{frame}{Dynamic Programming - Recursive Step - Lower Value}
   \begin{align*}
     \alert{\max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]} = \max_x R(i-1, ?, ?)
   \end{align*}
@@ -320,7 +325,7 @@
   }
 \end{frame}
 
-\begin{frame}{Recursive Step}
+\begin{frame}{Dynamic Programming - Recursive Step}
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
@@ -373,7 +378,7 @@
   }
 \end{frame}
 
-\begin{frame}{Recursive Step - Exact value}
+\begin{frame}{Dynamic Programming - Recursive Step - Exact value}
   Occurrence Probability
   \begin{align*}
     \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2] = \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon] \eqcolon q_i
@@ -394,7 +399,7 @@
   \footnotetext[1]{$\bar{F}'_i$ is the distribution of the participation cost conditional on the value being $i\epsilon$}
 \end{frame}
 
-\begin{frame}{Recursive Step}
+\begin{frame}{Dynamic Programming - Recursive Step}
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
@@ -402,10 +407,10 @@
   \end{align*}
 \end{frame}
 
-\begin{frame}{Recursive Formula}
+\begin{frame}{Dynamic Programming - Recursive Formula}
   \begin{columns}
     \begin{column}{.6\textwidth}
-      Let $R(i,j,k)$ be the optimal revenue, when
+      $R(i,j,k)$ : optimal revenue, with
       \begin{itemize}
         \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
         \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
