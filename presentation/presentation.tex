@@ -23,12 +23,12 @@
     \item An item to sell
     \item Each buyer $i \in \mathcal{N}$ has
           \begin{itemize}
-            \item private valuation $v_i \in \mathbb{R}$
+            \item private valuation $v_i \in \mathbb{R}_{\geq0}$
             \item<2-> \alert{private participation cost $c_i \in \mathbb{R}$}
           \end{itemize}
     \item Mechanism $\mathcal{M} = (x,p)$
           \begin{itemize}
-            \item $x: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \{0,1\}^n$ Allocation function
+            \item $x: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow [0,1]^n$ Allocation function
             \item $p: \mathbb{R} \only<2>{\times \mathbb{R}} \rightarrow \mathbb{R}^n$ Payment function
           \end{itemize}
     \item Utility
@@ -131,7 +131,7 @@
   \end{align*}
 
   \begin{theorem}[\cite{primary}]
-    Given any $\bar{F}$ with marginal cost distribution $G$, any mechanism $\mathcal{M}=(x,p)$, then the expected revenue of the seller $\mathbf{E}_{t \sim \bar{F}}\left[p_c(v)\right] $ is
+    Given any $\bar{F}$ with marginal cost distribution $G$, any mechanism $\mathcal{M}=(x,p)$, then the expected revenue $\mathbf{E}_{t \sim \bar{F}}\left[p_c(v)\right]$ of the seller is
 
     \begin{align*}
       \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \max\{-p_0,c\}\right]
@@ -148,7 +148,7 @@
   \begin{itemize}
     \item $\varphi_c(v) = \varphi(v)$
     \item $\bar{F}_c(v) = \bar{F}(v)$
-    \item $\mathbf{E}_{v \sim F}\left[x_c(v) \varphi(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$
+    \item $\mathbf{E}_{v \sim F}\left[x_c(v) \varphi_c(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$
           (individual rationality if $p_0 = 0$)
   \end{itemize}
 
@@ -166,14 +166,14 @@
   Case $c > -p_0$ $\Rightarrow$ $v_x(c) > 0$ \\
   \begin{itemize}
     \item If player participates [$v \geq v_x(c)$]\\
-          $p(v) = v x(v) - \int_0^vx(t)dt + p_0 = v x_{\alert{c}}(v) - \int_0^v x_{\alert{c}}(v) - c$ \\
+          $p_c(v) = v x(v) - \int_0^vx(t)dt + p_0 = v x_{\alert{c}}(v) - \int_0^v x_{\alert{c}}(v) \alert{- c}$ \\
     \item If player opts out [$v < v_x(c)$]\\
-          $p(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt$
+          $p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt$
   \end{itemize}
 
   \begin{align*}
-    \mathbf{E}_{v \sim \bar{F}_c}\left[p(v)\right] & = \mathbf{E}_{v \sim \bar{F}_c}\left[v \cdot x_c(v) - \int_0^v x_c(t)dt - c \cdot \mathbf{1}\left[v \geq v_x(c)\right]\right] \\
-                                                   & = \mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1 - \bar{F}_c(v_x(c))) \cdot c
+    \mathbf{E}_{v \sim \bar{F}_c}\left[p_c(v)\right] & = \mathbf{E}_{v \sim \bar{F}_c}\left[v \cdot x_c(v) - \int_0^v x_c(t)dt - c \cdot \mathbf{1}\left[v \geq v_x(c)\right]\right] \\
+                                                     & = \mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1 - \bar{F}_c(v_x(c))) \cdot c
   \end{align*}
 
 \end{frame}
@@ -182,7 +182,7 @@
   Case $c \leq -p_0$ $\Rightarrow$ $v_x(c) = 0$ \\
   \begin{itemize}
     \item For $v \geq 0$\\
-          $p(v) = v x(v) - \int_0^vx(t)dt + p_0 = v x_c(v) - \int_0^v x_c(v) + p_0$ \\
+          $p_c(v) = v x(v) - \int_0^vx(t)dt + p_0 = v x_c(v) - \int_0^v x_c(v) + p_0$ \\
   \end{itemize}
 
   \begin{align*}
@@ -196,8 +196,8 @@
 
   Case $c > -p_0$ + Case $c \leq -p_0$
   \begin{align*}
-    \Rightarrow & \mathbf{E}\left[p(v)\right]                                                                                                            \\
-    =           & \mathbf{Pr}[c > -p_0]\mathbf{E}\left[p(v) \mid c > -p_0\right] + \mathbf{Pr}[c \leq -p_0]\mathbf{E}\left[p(v) \mid c \leq -p_0\right]  \\
+    \Rightarrow & \mathbf{E}\left[p_c(v)\right]                                                                                                             \\
+    =           & \mathbf{Pr}[c > -p_0]\mathbf{E}\left[p_c(v) \mid c > -p_0\right] + \mathbf{Pr}[c \leq -p_0]\mathbf{E}\left[p_c(v) \mid c \leq -p_0\right] \\
     =           & \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] + (1-\bar{F}_c(v_x(c))) \max\{c, -p_0\}\right]
   \end{align*}
 
@@ -207,17 +207,17 @@
 \section{Single Buyer - Revenue Maximizing Mechanism}
 
 \begin{frame}{FPTAS Algorithm - Motivation}
-  Search for $\operatorname{argmax}_{\mathcal{M}} \mathbf{E}\left[p(v)\right]$.
+  Search for $\operatorname{argmax}_{\mathcal{M}} \mathbf{E}\left[p_c(v)\right]$.
 
-  But: $\mathbf{E}\left[p(v)\right]$ is non-convex.
+  But: $\mathbf{E}\left[p_c(v)\right]$ is non-convex.
 
-  $\Rightarrow$ Approximate $\operatorname{argmax}_{\mathcal{M}} \mathbf{E}\left[p(v)\right]$ using FPTAS.
+  $\Rightarrow$ Approximate $\operatorname{argmax}_{\mathcal{M}} \mathbf{E}\left[p_c(v)\right]$ using FPTAS.
 
   \textbf{Idea}:
   \begin{itemize}
-    \item Norm $v$ to $[0,1]$
+    \item Normalize $v$ to $[0,1]$
     \item Discretize value $v$'s and allocation function $x$'s space.
-    \item Calculate optimal mechanism, i.e. optimal allocation $x(v)$ for each $v$.
+    \item Calculate optimal discretized mechanism $\mathcal{M}'$, i.e., optimal allocation function $x(v)$ for each $v$.
   \end{itemize}
 
 \end{frame}
@@ -231,11 +231,10 @@
   \end{itemize}
 
   \alt<4>{
-    Then
-
+    Idea: Partially fix mechanism and optimize rest later $\rightarrow$ Dynamic Programming
     \begin{align*}
-      \max_{\mathcal{M}'} \mathbf{E}_{t \sim \bar{F}'}\left[p(v)\right] & = \max_{j, k} \mathbf{E}_{t \sim \bar{F}'}\left[p(v) \mid v \leq 1, x(1) = j\epsilon, u(1) = k \epsilon^2\right] \\
-                                                                        & = \max_{j, k} R(1 / \epsilon, j, k)
+      \max_{\mathcal{M}'} \mathbf{E}_{t \sim \bar{F}'}\left[p_c(v)\right] & = \max_{j, k} \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2}\mathbf{E}_{t \sim \bar{F}'}\left[p_c(v)\right] \\
+                                                                          & = \max_{j, k} R(1 / \epsilon, j, k)
     \end{align*}
   }{
     \begin{center}
@@ -279,7 +278,7 @@
     \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
   \end{itemize}
   \begin{align*}
-    \max_x \mathbf{E}[p(v) \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2] = R(i,j,k)
+    \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{E}[p_c(v) \mid v \leq i \epsilon] = R(i,j,k)
   \end{align*}
 
   \textbf{Base case:}
@@ -294,20 +293,20 @@
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
-     & R(i,j,k)                                                                                                                                               \\
-     & = \max_x \mathbf{E}\left[p(v) \mid v \leq i \epsilon, \mathcolor{gray}{x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2}\right]                    \\
-     & = \alert<2>{\max_x \mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, \mathcolor{gray}{\dots} \right]}                                                 \\
-     & + \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, \mathcolor{gray}{\dots} ] \mathbf{E}\left[p(v) \mid v = i\epsilon, \mathcolor{gray}{\dots} \right]
+     & R(i,j,k)                                                                                                                                           \\
+     & = \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{E}\left[p_c(v) \mid v \leq i \epsilon\right]                  \\
+     & = \alert<2>{\max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right]} \\
+     & + \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon] \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]
   \end{align*}
 \end{frame}
 
 \begin{frame}{Dynamic Programming - Recursive Step - Lower Value}
   \begin{align*}
-    \alert{\max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]} = \max_x R(i-1, ?, ?)
+    \alert{\max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right]} = \max_x R(i-1, ?, \alt<1>{\alert<1>{?}}{k-j})
   \end{align*}
 
   \begin{itemize}
-    \item $u((i-1)\epsilon) = \alt<1>{?}{(k-j)\epsilon^2}$
+    \item $u((i-1)\epsilon) = \alt<1>{\alert<1>{?}}{(k-j)\epsilon^2}$
           \only<2>{\item $x((i-1) \epsilon) \leq x(i \epsilon) = j \epsilon$ (x should be monotone)}
   \end{itemize}
   \only<1>{
@@ -319,8 +318,7 @@
   }
   \only<2>{
     \begin{align*}
-        & \max_x\mathbf{E}\left[p(v) \mid v \leq (i - 1) \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right] \\
-      = & \max_{j' \leq j} R(i-1, j', k-j)                                                                                      \\
+      \Rightarrow & \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2}\mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon \right] = \max_{j' \leq j} R(i-1, j', k-j) \\
     \end{align*}
   }
 \end{frame}
@@ -329,9 +327,8 @@
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
-     & R(i,j,k)                                                                                                                                                                     \\
-     & = \max_{j' \leq j} R(i-1, j', k-j)                                                                                                                                           \\
-     & + \alert<2>{\mathbf{Pr}\left[v = i\epsilon \mid v \leq i \epsilon, \mathcolor{gray}{\dots} \right] \mathbf{E}\left[p(v) \mid v = i\epsilon, \mathcolor{gray}{\dots} \right]}
+     & R(i,j,k)                                                                                                                                           \\
+     & = \max_{j' \leq j} R(i-1, j', k-j) + \alert<2>{\mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon] \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]}
   \end{align*}
 
   \only<1>{
@@ -384,19 +381,17 @@
     \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2] = \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon] \eqcolon q_i
   \end{align*}
 
-  Expected Revenue
+  Expected Revenue given that $v = i \epsilon$, $x(i\epsilon) = j\epsilon$ and $u(i\epsilon)=k\epsilon^2$
   \begin{align*}
-     & \mathbf{E}\left[p(v) \mid v = i\epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2 \right]                                               \\
-     & = \mathbf{Pr}[c \leq u(v) \mid v = i\epsilon, u(i\epsilon) = k\epsilon^2] \cdot \mathbf{E}\left[p(v) \mid v = i\epsilon, c \leq u(v), \dots \right] \\
-     & = \bar{F}'_i(k \epsilon^2) \footnotemark[1] \cdot \mathbf{E}\left[p(v) \mid v = i\epsilon, c \leq u(v), \dots \right]
+     & \mathbf{E}\left[p_c(i \epsilon)\right]                                                                    \\
+     & = \mathbf{Pr}[c \leq u(i \epsilon)] \cdot \mathbf{E}\left[p_c(i\epsilon) \mid c \leq u(i\epsilon) \right] \\
+     & = \bar{F}'_i(k \epsilon^2) \cdot \mathbf{E}\left[p(i \epsilon)\right]
   \end{align*}
 
   Payment When Participating
   \begin{align*}
     p(v) = u(v) - v x(v) = k\epsilon^2 - i \cdot \epsilon \cdot j \cdot \epsilon = (i \cdot j - k) \epsilon^2
   \end{align*}
-
-  \footnotetext[1]{$\bar{F}'_i$ is the distribution of the participation cost conditional on the value being $i\epsilon$}
 \end{frame}
 
 \begin{frame}{Dynamic Programming - Recursive Step}
@@ -478,7 +473,7 @@
 \begin{frame}{FPTAS Algorithm}
   Optimal revenue $\mathcal{M}'$ on discretized value and allocation function space:
   \begin{align*}
-    \max_{\mathcal{M}'} \mathbf{E}\left[p(v)\right] = \max_{j,k} R(1/\epsilon, j, k)
+    \max_{\mathcal{M}'} \mathbf{E}\left[p_c(v)\right] = \max_{j,k} R(1/\epsilon, j, k)
   \end{align*}
 
   \begin{theorem}[\citeauthor{primary}]
