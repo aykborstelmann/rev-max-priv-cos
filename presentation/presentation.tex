@@ -380,19 +380,19 @@
   }
 \end{frame}
 
-\begin{frame}<-3>{Dynamic Programming - Recursive Step}
+\begin{frame}<-4>{Dynamic Programming - Recursive Step}
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
-     & R(i,j,k)                                                                                                                                               \\
-    \alt<1>{
-     & = \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \big(                                                                     \\
-     & \quad \mathbf{Pr}[v \leq (i-1) \epsilon] \mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right]                                                    \\
+     & R(i,j,k)                                                                                                                                                          \\
+    \alt<-2>{
+     & = \alert<2>{\max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2}} \big(                                                                     \\
+     & \quad \alert<2>{\mathbf{Pr}[v \leq (i-1) \epsilon] \mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right]}                                                    \\
     }{
-     & = \max_{j' \leq j} R(i-1, j', k-j)                                                                                                                     \\
+     & = \max_{j' \leq j} R(i-1, j', k-j)                                                                                                                                \\
     }
-     & \quad + \alert<3>{\mathbf{Pr}[v = i\epsilon] \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]_{x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2}} \\
-    \only<1>{
+     & \quad + \alert<4>{\mathbf{Pr}[v = i\epsilon] \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]_{\only<3->{x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2}}} \\
+    \only<-2>{
      & \quad\big)
     }
   \end{align*}
@@ -517,7 +517,7 @@
     \max_{\mathcal{M}'} \mathbf{E}\left[p_c(v)\right] = \max_{j,k} R(1/\epsilon, j, k)
   \end{align*}
 
-  \begin{theorem}[\citeauthor{primary}]
+  \begin{theorem}<2->[\citeauthor{primary}]
     For any distribution $\bar{F}$ supported on $[0,1]^2$, for any $\epsilon \in (0,1)$ the algorithm computes a mechanism with revenue of at least $OPT(\bar{F}) - 4\epsilon$ in $O(\frac{1}{\epsilon^5})$ time.
   \end{theorem}
 \end{frame}
