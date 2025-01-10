@@ -17,7 +17,7 @@
 \section{Introductory Example}
 \section{Problem Statement}
 \begin{frame}{Problem Statement}
-  \only<1>{Recall single item auction ...}
+  \onslide<1>{Recall single item auction ...}
   \begin{itemize}
     \item Set $\mathcal{N}$ of $n$ buyers
     \item An item to sell
@@ -36,7 +36,7 @@
             u_i(v_i\only<2>{, c_i}) = \alt<1>{v_i x_i(v_i) - p_i(v_i)}{\begin{cases}v_i x_i(v_i, c_i) - p_i(v_i, c_i) - \alert{c_i} & \text{i participates} \\ 0 & \text{otherwise}\end{cases}}
           \end{align*}
   \end{itemize}
-  \only<2>{
+  \onslide<2>{
     Call $t_i = (v_i, c_i) \sim \bar{F}_i$ the type of a player.
   }
 \end{frame}
@@ -76,7 +76,7 @@
 \begin{frame}{Truthful Mechanism - Private Cost}
   Given any single parameter truthful mechanism $\mathcal{M} = (x,p)$ (without respecting private cost $c$).
 
-  \begin{columns}
+  \begin{columns}<2->
     \begin{column}{.5\textwidth}
       \begin{align*}
         v_x(c) & = \inf_{v \in \mathbb{R}_{\geq 0}} \{\underbrace{v x(v) - p(v)}_{u^\mathcal{M}(v)} \geq c\} \\
@@ -92,7 +92,7 @@
     \end{column}
   \end{columns}
 
-  \begin{columns}
+  \begin{columns}<3->
     \begin{column}{.5\textwidth}
       \begin{align*}
         x_c(v) & = \begin{cases}
@@ -121,7 +121,6 @@
 
     \end{column}
   \end{columns}
-
 \end{frame}
 
 \begin{frame}{Expected Revenue - Private Cost}
@@ -130,7 +129,7 @@
     \varphi_c(v) = v - \frac{1- \bar{F}_c(v)}{\hat{f}_c(v)}
   \end{align*}
 
-  \begin{theorem}[\cite{primary}]
+  \begin{theorem}<2->[\cite{primary}]
     Given any $\bar{F}$ with marginal cost distribution $G$, any mechanism $\mathcal{M}=(x,p)$, then the expected revenue $\mathbf{E}_{t \sim \bar{F}}\left[p_c(v)\right]$ of the seller is
 
     \begin{align*}
@@ -146,59 +145,64 @@
 
   Then
   \begin{itemize}
-    \item $\varphi_c(v) = \varphi(v)$
-    \item $\bar{F}_c(v) = \bar{F}(v)$
-    \item $\mathbf{E}_{v \sim F}\left[x_c(v) \varphi_c(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$
-          (individual rationality if $p_0 = 0$)
+    \item<2-> $\varphi_c(v) = \varphi(v)$
+    \item<3-> $\bar{F}_c(v) = \bar{F}(v)$
+    \item<4-> $\mathbf{E}_{v \sim F}\left[x_c(v) \varphi_c(v)\right] = \mathbf{E}_{v \sim F}\left[x(v) \varphi(v)\right]$
+      (individual rationality if $p_0 = 0$)
   \end{itemize}
 
-  \begin{align*}
-    \Rightarrow & \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \underbrace{\max\{-p_0,c\}}_{=0}\right] \\
-    =           & \mathbf{E}_{v \sim \bar{F}}\left[x(v) \varphi(v)\right]
-  \end{align*}
+  \onslide<5->{
+    \begin{align*}
+      \Rightarrow & \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \underbrace{\max\{-p_0,c\}}_{=0}\right] \\
+      =           & \mathbf{E}_{v \sim \bar{F}}\left[x(v) \varphi(v)\right]
+    \end{align*}
+  }
 \end{frame}
 
 \begin{frame}{Expected Revenue - Private Cost - Proof}
   \textbf{Proof.}\\
 
-  Let $c$ be arbitrary fixed.
+  Let $c$ be fixed arbitrarily.
 
   Case $c > -p_0$ $\Rightarrow$ $v_x(c) > 0$ \\
   \begin{itemize}
-    \item If player participates [$v \geq v_x(c)$]\\
-          $p_c(v) = v x(v) - \int_0^vx(t)dt + p_0 = v x_{\alert{c}}(v) - \int_0^v x_{\alert{c}}(v) \alert{- c}$ \\
-    \item If player opts out [$v < v_x(c)$]\\
-          $p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt$
+    \item<2-> If player participates [$v \geq v_x(c)$]\\
+      $p_c(v) = v x(v) - \int_0^vx(t)dt + p_0 = v x_{\alert{c}}(v) - \int_0^v x_{\alert{c}}(v) \alert{- c}$ \\
+    \item<3-> If player opts out [$v < v_x(c)$]\\
+      $p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt$
   \end{itemize}
 
-  \begin{align*}
-    \mathbf{E}_{v \sim \bar{F}_c}\left[p_c(v)\right] & = \mathbf{E}_{v \sim \bar{F}_c}\left[v \cdot x_c(v) - \int_0^v x_c(t)dt - c \cdot \mathbf{1}\left[v \geq v_x(c)\right]\right] \\
-                                                     & = \mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1 - \bar{F}_c(v_x(c))) \cdot c
-  \end{align*}
+  \onslide<4->{
+    \begin{align*}
+      \mathbf{E}_{v \sim \bar{F}_c}\left[p_c(v)\right] & = \mathbf{E}_{v \sim \bar{F}_c}\left[v \cdot x_c(v) - \int_0^v x_c(t)dt - c \cdot \mathbf{1}\left[v \geq v_x(c)\right]\right] \\
+      \onslide<5->{                                    & = \mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1 - \bar{F}_c(v_x(c))) \cdot c}
+    \end{align*}
+  }
 
 \end{frame}
 \begin{frame}{Expected Revenue - Private Cost - Proof (Cont.)}
 
   Case $c \leq -p_0$ $\Rightarrow$ $v_x(c) = 0$ \\
   \begin{itemize}
-    \item For $v \geq 0$\\
-          $p_c(v) = v x(v) - \int_0^vx(t)dt + p_0 = v x_c(v) - \int_0^v x_c(v) + p_0$ \\
+    \item<2-> Player participates \\
+      $p_c(v) = v x(v) - \int_0^vx(t)dt + p_0 = v x_c(v) - \int_0^v x_c(v) + p_0$ \\
   \end{itemize}
 
-  \begin{align*}
-    \mathbf{E}_{v \sim \bar{F}_c}\left[p(v)\right] & = \mathbf{E}_{v \sim \bar{F}_c} \left[v x_c(v) - \int_0^v x_c(v) + p_0 \right]                     \\
-                                                   & = \mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] + p_0                               \\
-                                                   & = \mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] + (1 - \bar{F}_c(v_x(c))) \cdot p_0
-  \end{align*}
+  \onslide<3->{
+    \begin{align*}
+      \mathbf{E}_{v \sim \bar{F}_c}\left[p(v)\right] & = \mathbf{E}_{v \sim \bar{F}_c} \left[v x_c(v) - \int_0^v x_c(v) + p_0 \right]                                               \\
+      \onslide<4->{                                  & = \mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] + p_0                               \\}
+      \onslide<5->{                                  & = \mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] + (1 - \bar{F}_c(v_x(c))) \cdot p_0}
+    \end{align*}
+  }
 
 \end{frame}
 \begin{frame}{Expected Revenue - Private Cost - Proof (Cont.)}
 
   Case $c > -p_0$ + Case $c \leq -p_0$
   \begin{align*}
-    \Rightarrow & \mathbf{E}\left[p_c(v)\right]                                                                                                             \\
-    =           & \mathbf{Pr}[c > -p_0]\mathbf{E}\left[p_c(v) \mid c > -p_0\right] + \mathbf{Pr}[c \leq -p_0]\mathbf{E}\left[p_c(v) \mid c \leq -p_0\right] \\
-    =           & \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] + (1-\bar{F}_c(v_x(c))) \max\{c, -p_0\}\right]
+    \Rightarrow    & \mathbf{E}\left[p_c(v)\right]                                                                                                           \\
+    \onslide<2->{= & \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v \sim \bar{F}_c}\left[x_c(v)\varphi_c(v)\right] + (1-\bar{F}_c(v_x(c))) \max\{c, -p_0\}\right]}
   \end{align*}
 
   \qed
@@ -225,9 +229,9 @@
 \begin{frame}{FPTAS Algorithm - Dynamic Programming}
   For $v \in [0,1]$
   \begin{itemize}
-    \item Let $\epsilon \in (0,1)$ (discretization degree).
-    \item Let $\bar{F}'$ be type distribution of $\bar{F}$ with \textbf{value} rounded down to nearest multiple of $\epsilon$.
-    \item Round allocation function down to the nearest multiple of $\epsilon$
+    \item<1-> Let $\epsilon \in (0,1)$ (discretization degree).
+    \item<2-> Let $\bar{F}'$ be type distribution of $\bar{F}$ with \textbf{value} rounded down to nearest multiple of $\epsilon$.
+    \item<3-> Round allocation function down to the nearest multiple of $\epsilon$
   \end{itemize}
 
   \alt<4>{
@@ -271,14 +275,14 @@
 \end{frame}
 
 \begin{frame}{Dynamic Programming - Recursive Formula}
-  Where $R(i,j,k)$ be the optimal revenue, when
+  Where $R(i,j,k)$ be the optimal revenue from buyers
   \begin{itemize}
-    \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
-    \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
-    \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
+    \item with $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
+    \item where $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
+    \item and $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
   \end{itemize}
   \begin{align*}
-    \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{E}[p_c(v) \mid v \leq i \epsilon] = R(i,j,k)
+    \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{Pr}[v \leq i \epsilon] \mathbf{E}[p_c(v) \mid v \leq i \epsilon] = R(i,j,k)
   \end{align*}
 
   \textbf{Base case:}
@@ -293,123 +297,157 @@
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
-     & R(i,j,k)                                                                                                                                           \\
-     & = \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{E}\left[p_c(v) \mid v \leq i \epsilon\right]                  \\
-     & = \alert<2>{\max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right]} \\
-     & + \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon] \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]
+     & R(i,j,k)                                                                                                                                     \\
+     & = \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2}
+    \mathbf{Pr}[v \leq i \epsilon] \alert<2>{\mathbf{E}\left[p_c(v) \mid v \leq i \epsilon\right]}                                                  \\
+    \onslide<3-8>{
+     & = \alert<8>{\max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2}}
+    \only<-4>{\alert<4>{\mathbf{Pr}[v \leq i \epsilon]}} \big(                                                                                      \\
+     & \quad \only<5-6>{\alert{\mathbf{Pr}[v \leq i \epsilon]}} \alert<6,7,8>{\mathbf{Pr}[v \leq (i-1) \epsilon \only<-4>{\mid v \leq i \epsilon}]}
+    \alert<8>{\mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right]}                                                                           \\
+     & \quad + \only<5-6>{\alert{\mathbf{Pr}[v \leq i \epsilon]}} \alert<6,7>{\mathbf{Pr}[v = i\epsilon \only<-4>{\mid v \leq i \epsilon}]}
+    \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]                                                                                                \\
+     & \quad\big)
+    }
   \end{align*}
 \end{frame}
 
-\begin{frame}{Dynamic Programming - Recursive Step - Lower Value}
+\begin{frame}<1-9>{Dynamic Programming - Recursive Step - Lower Value}
   \begin{align*}
-    \alert{\max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right]} = \max_x R(i-1, ?, \alt<1>{\alert<1>{?}}{k-j})
+                  & \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \mathbf{Pr}[v \leq (i-1)\epsilon] \mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right] \\
+    \onslide<2->{ & = \max_{\alt<-7>{?}{j' \leq j}} R(i-1, \alt<-7>{\alert<6>{?}}{j'}, \alt<-4>{\alert<3>{?}}{k-j})}
   \end{align*}
 
-  \begin{itemize}
-    \item $u((i-1)\epsilon) = \alt<1>{\alert<1>{?}}{(k-j)\epsilon^2}$
-          \only<2>{\item $x((i-1) \epsilon) \leq x(i \epsilon) = j \epsilon$ (x should be monotone)}
-  \end{itemize}
-  \only<1>{
-    \begin{align*}
-      u(i\epsilon)     & = u((i-1)\epsilon) + \epsilon x(i\epsilon) = u((i-1)\epsilon) + j \epsilon^2 \\
-                       & \Leftrightarrow                                                              \\
-      u((i-1)\epsilon) & = u(i\epsilon) - j \epsilon^2 = k \epsilon2 - j \epsilon^2= (k-j)\epsilon^2
-    \end{align*}
-  }
-  \only<2>{
-    \begin{align*}
-      \Rightarrow & \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2}\mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon \right] = \max_{j' \leq j} R(i-1, j', k-j) \\
-    \end{align*}
+  \onslide<4-> {
+    \alt<-8>{
+      \begin{itemize}
+        \item $u((i-1)\epsilon) = \alt<-4>{\alert<4>{?}}{(k-j)\epsilon^2}$
+              \only<4>{
+                \begin{align*}
+                  u(i\epsilon)     & = u((i-1)\epsilon) + \epsilon x(i\epsilon) = u((i-1)\epsilon) + j \epsilon^2 \\
+                                   & \Leftrightarrow                                                              \\
+                  u((i-1)\epsilon) & = u(i\epsilon) - j \epsilon^2 = k \epsilon2 - j \epsilon^2= (k-j)\epsilon^2
+                \end{align*}
+              }
+        \item<7-> $x((i-1) \epsilon) \leq x(i \epsilon) = j \epsilon$ (x should be monotone)
+      \end{itemize}
+    }
+    {
+      \begin{center}
+        \begin{tikzpicture}[
+            node/.style={circle, draw=black, fill=gray!20, scale=.4},
+            axis/.style={->, thick},
+            gridline/.style={gray, dashed}
+          ]
+
+          \draw[axis] (0, 0) -- (3.5, 0) node[right] {$i$};
+          \draw[axis] (0, 0) -- (0, 3.5) node[above] {$j$};
+
+          \foreach \x in {1, 2, 3} {
+              \draw[gridline] (\x, 0) -- (\x, 3.5);
+              \draw[gridline] (0, \x) -- (3.5, \x);
+            }
+
+          \foreach \i in {1, 2, 3} {
+              \foreach \j in {1, 2, 3} {
+                  \ifthenelse{\i=3\and\j=2}
+                  {
+                    \node[node, fill=green!20] at (\i, \j) {$R(\i,\j,k)$};
+                  }
+                  {
+                    \ifthenelse{\i=2\and\j<3}
+                    {
+                      \node[node, fill=blue!20] at (\i, \j) {$R(\i,\j,k)$};
+                    }
+                    {
+                      \node[node] at (\i, \j) {$R(\i,\j,k)$};
+                    }
+                  }
+                }
+            }
+
+          \node at (0, 0) [below left] {0};
+          \foreach \x in {1, 2, 3, 3} {
+              \node at (0, \x) [left] {\x};
+              \node at (\x, 0) [below] {\x};
+            }
+        \end{tikzpicture}
+      \end{center}
+    }
   }
 \end{frame}
 
-\begin{frame}{Dynamic Programming - Recursive Step}
+\begin{frame}<-3>{Dynamic Programming - Recursive Step}
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
-     & R(i,j,k)                                                                                                                                           \\
-     & = \max_{j' \leq j} R(i-1, j', k-j) + \alert<2>{\mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon] \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]}
+     & R(i,j,k)                                                                                                                                               \\
+    \alt<1>{
+     & = \max_{\mathcal{M}' : x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2} \big(                                                                     \\
+     & \quad \mathbf{Pr}[v \leq (i-1) \epsilon] \mathbf{E}\left[p_c(v) \mid v \leq (i - 1) \epsilon\right]                                                    \\
+    }{
+     & = \max_{j' \leq j} R(i-1, j', k-j)                                                                                                                     \\
+    }
+     & \quad + \alert<3>{\mathbf{Pr}[v = i\epsilon] \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]_{x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2}} \\
+    \only<1>{
+     & \quad\big)
+    }
   \end{align*}
-
-  \only<1>{
-    \begin{center}
-      \begin{tikzpicture}[
-          node/.style={circle, draw=black, fill=gray!20, scale=.4},
-          axis/.style={->, thick},
-          gridline/.style={gray, dashed}
-        ]
-
-        \draw[axis] (0, 0) -- (3.5, 0) node[right] {$i$};
-        \draw[axis] (0, 0) -- (0, 3.5) node[above] {$j$};
-
-        \foreach \x in {1, 2, 3} {
-            \draw[gridline] (\x, 0) -- (\x, 3.5);
-            \draw[gridline] (0, \x) -- (3.5, \x);
-          }
-
-        \foreach \i in {1, 2, 3} {
-            \foreach \j in {1, 2, 3} {
-                \ifthenelse{\i=3\and\j=2}
-                {
-                  \node[node, fill=green!20] at (\i, \j) {$R(\i,\j,k)$};
-                }
-                {
-                  \ifthenelse{\i=2\and\j<3}
-                  {
-                    \node[node, fill=blue!20] at (\i, \j) {$R(\i,\j,k)$};
-                  }
-                  {
-                    \node[node] at (\i, \j) {$R(\i,\j,k)$};
-                  }
-                }
-              }
-          }
-
-        \node at (0, 0) [below left] {0};
-        \foreach \x in {1, 2, 3, 3} {
-            \node at (0, \x) [left] {\x};
-            \node at (\x, 0) [below] {\x};
-          }
-      \end{tikzpicture}
-    \end{center}
-  }
 \end{frame}
 
 \begin{frame}{Dynamic Programming - Recursive Step - Exact value}
   Occurrence Probability
   \begin{align*}
-    \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon, x(i\epsilon) = j\epsilon, u(i\epsilon) = k\epsilon^2] = \mathbf{Pr}[v = i\epsilon \mid v \leq i \epsilon] \eqcolon q_i
+    \mathbf{Pr}[v = i\epsilon] \eqcolon q_i
   \end{align*}
 
-  Expected Revenue given that $v = i \epsilon$, $x(i\epsilon) = j\epsilon$ and $u(i\epsilon)=k\epsilon^2$
-  \begin{align*}
-     & \mathbf{E}\left[p_c(i \epsilon)\right]                                                                    \\
-     & = \mathbf{Pr}[c \leq u(i \epsilon)] \cdot \mathbf{E}\left[p_c(i\epsilon) \mid c \leq u(i\epsilon) \right] \\
-     & = \bar{F}'_i(k \epsilon^2) \cdot \mathbf{E}\left[p(i \epsilon)\right]
-  \end{align*}
-
-  Payment When Participating
-  \begin{align*}
-    p(v) = u(v) - v x(v) = k\epsilon^2 - i \cdot \epsilon \cdot j \cdot \epsilon = (i \cdot j - k) \epsilon^2
-  \end{align*}
+  \onslide<2-> {
+    Expected Revenue given that $v = i \epsilon$, $x(i\epsilon) = j\epsilon$ and $u(i\epsilon)=k\epsilon^2$
+    \begin{align*}
+       & \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]_{x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2}                                                          \\
+      \onslide<3->{
+       & = \mathbf{Pr}[c \leq u(i \epsilon)] \cdot \mathbf{E}\left[p_c(i\epsilon) \mid c \leq u(i\epsilon) \right]_{x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \\
+      }
+      \onslide<4->{
+       & = \bar{F}'_i(k \epsilon^2) \cdot \mathbf{E}\left[p(i \epsilon)\right]_{x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2}
+      }
+    \end{align*}
+  }
+  \onslide<5->{
+    Payment When Participating
+    \begin{align*}
+      p(v) = u(v) - v x(v) \onslide<6->{= k\epsilon^2 - i \cdot \epsilon \cdot j \cdot \epsilon = (i \cdot j - k) \epsilon^2}
+    \end{align*}
+  }
 \end{frame}
 
 \begin{frame}{Dynamic Programming - Recursive Step}
   \textbf{Recursion Step:}
   Let $i \geq 2$.
   \begin{align*}
-    R(i,j,k) = \max_{j' \leq j} R(i-1, j', k-j) + q_i \cdot \bar{F_i}'(k \cdot \epsilon^2) \cdot (i\cdot j - k) \epsilon^2
+     & R(i,j,k)
+    \only<-1>{
+    \\
+     &
+    }
+    = \max_{j' \leq j} R(i-1, j', k-j)
+    \alt<-1>{
+    \\
+     & \quad + \alert<3>{\mathbf{Pr}[v = i\epsilon] \mathbf{E}\left[p_c(v) \mid v = i\epsilon\right]_{x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2}} \\
+    }{
+    + q_i \cdot \bar{F_i}'(k \cdot \epsilon^2) \cdot (i\cdot j - k) \epsilon^2                                                                                \\
+    }
   \end{align*}
 \end{frame}
 
 \begin{frame}{Dynamic Programming - Recursive Formula}
   \begin{columns}
     \begin{column}{.6\textwidth}
-      $R(i,j,k)$ : optimal revenue, with
+      $R(i,j,k)$ : optimal revenue from buyers
       \begin{itemize}
-        \item $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
-        \item $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
-        \item $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
+        \item with $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
+        \item where $x(i \cdot \epsilon) = j \cdot \epsilon$ with $j \leq \frac{1}{\epsilon}$
+        \item and $u(i \cdot \epsilon) = k \cdot \epsilon^2$ with $k \leq \frac{1}{\epsilon^2}$
       \end{itemize}
 
       \textbf{Base case:}
@@ -485,32 +523,29 @@
   \textbf{Proof.}\\
   \begin{align*}
     \mathrm{Rev}(\bar{F}, \mathcal{M}') & \geq \mathrm{Rev}(\bar{F}', \mathcal{M}')
-    \only<2-> {
+    \onslide<2-> {
     \\ &\geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon = \mathrm{OPT}(\bar{F}') - \epsilon
     }
-    \only<3>{
+    \onslide<3>{
     \\ &\geq \mathrm{OPT}(\bar{F}) - 4 \epsilon
     }
   \end{align*}
+  \onslide<3>{\qed}
 
-  \only<3>{\qed}
+  \onslide<2->{
+    \alt<2>{
+      Where $\widehat{\mathcal{M}}$ is the optimal mechanism on $\bar{F}'$ (allocation rule not necessarily discretized).
 
-  \only<2> {
-    Where $\widehat{\mathcal{M}}$ is the optimal mechanism on $\bar{F}'$ (allocation rule not necessarily discretized).
-  }
-
-  \only<2>{
-    \begin{lemma}[\cite{primary}]
-      For any distribution $\bar{F}$ supported on $[0,1]^2$ and for any pair of mechanisms $\mathcal{M}'$ and $\widehat{\mathcal{M}}$
-      with allocation rules $x'$ and $\hat{x}$, s.t. $x'(v) \in [\hat{x}(v), \hat{x}(v) + \epsilon]$ for all $\epsilon$, we have $\mathrm{Rev}(\bar{F}, \mathcal{M}') \geq \mathrm{Rev}(\bar{F}, \widehat{\mathcal{M}}) - \epsilon$.
-    \end{lemma}
-  }
-
-  \only<3>{
-    \begin{lemma}[\cite{primary}]
-      Let $(\Omega, \mathcal{F}, P)$ be any probability measure and let $t_1, t_2: \Omega \rightarrow \mathbb{R}^2$ be two 2-dimensional random variables.
-      If $\sup_{\omega \in \Omega} || t_1(\omega) - t_2(\omega) ||_\infty \leq \epsilon$, then $|\mathrm{OPT}(t_1) - \mathrm{OPT}(t_2)| \leq 3\epsilon$.
-    \end{lemma}
+      \begin{lemma}[\cite{primary}]
+        For any distribution $\bar{F}$ supported on $[0,1]^2$ and for any pair of mechanisms $\mathcal{M}'$ and $\widehat{\mathcal{M}}$
+        with allocation rules $x'$ and $\hat{x}$, s.t. $x'(v) \in [\hat{x}(v), \hat{x}(v) + \epsilon]$ for all $\epsilon$, we have $\mathrm{Rev}(\bar{F}, \mathcal{M}') \geq \mathrm{Rev}(\bar{F}, \widehat{\mathcal{M}}) - \epsilon$.
+      \end{lemma}
+    }{
+      \begin{lemma}[\cite{primary}]
+        Let $(\Omega, \mathcal{F}, P)$ be any probability measure and let $t_1, t_2: \Omega \rightarrow \mathbb{R}^2$ be two 2-dimensional random variables.
+        If $\sup_{\omega \in \Omega} || t_1(\omega) - t_2(\omega) ||_\infty \leq \epsilon$, then $|\mathrm{OPT}(t_1) - \mathrm{OPT}(t_2)| \leq 3\epsilon$.
+      \end{lemma}
+    }
   }
 \end{frame}
 
