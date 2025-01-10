@@ -2,6 +2,7 @@
 \usepackage[style=authoryear]{biblatex}
 \usepackage{mathtools}
 \usepackage{tikz,pgfplots}
+\usepackage{fontawesome5}
 \addbibresource{references.bib} 
 \usetheme{metropolis}
 \title{Revenue Maximization for Buyers with Costly Participation}
@@ -17,7 +18,28 @@
 
 \begin{document}
 \maketitle
-\section{Introductory Example}
+\begin{frame}{Motivation}
+
+  \begin{columns}
+    \begin{column}{.3\textwidth}
+      \begin{center}
+        \resizebox{!}{.45\textwidth}{\faPlane}
+      \end{center}
+    \end{column}
+    \begin{column}{.4\textwidth}
+      \begin{center}
+        \resizebox{!}{.35\textwidth}{\faUserSlash}
+      \end{center}
+    \end{column}
+    \begin{column}{.3\textwidth}
+      \begin{center}
+        \resizebox{!}{.5\textwidth}{\faDollarSign}
+      \end{center}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
 \section{Problem Statement}
 \begin{frame}{Problem Statement}
   \onslide<1>{Recall single item auction ...}
@@ -43,7 +65,7 @@
     Call $t_i = (v_i, c_i) \sim \bar{F}_i$ the type of a player.
   }
 \end{frame}
-\section{Single Buyer - Incentive Compatible \& Expected Revenue}
+\section{Single Buyer \\ Incentive Compatibility \& Expected Revenue}
 
 \begin{frame}{Truthful Mechanism - Myerson}
   \begin{lemma}[\cite{myerson}, Single Buyer]
@@ -211,7 +233,7 @@
   \qed
 \end{frame}
 
-\section{Single Buyer - Revenue Maximizing Mechanism}
+\section{Single Buyer \\ Revenue Maximizing Mechanism}
 
 \begin{frame}{FPTAS Algorithm - Motivation}
   Search for $\operatorname{argmax}_{\mathcal{M}} \mathbf{E}\left[p_c(v)\right]$.
@@ -247,8 +269,8 @@
     \begin{center}
       \begin{tikzpicture}[>=latex]
         \begin{axis}[
-            width=.5\textwidth,
-            height=.5\textwidth,
+            width=.45\textwidth,
+            height=.45\textwidth,
             xlabel={$v$},
             ylabel={$x(v)$},
             grid=major,
@@ -445,7 +467,7 @@
 
 \begin{frame}{Dynamic Programming - Recursive Formula}
   \begin{columns}
-    \begin{column}{.6\textwidth}
+    \begin{column}{.7\textwidth}
       $R(i,j,k)$ : optimal revenue from buyers
       \begin{itemize}
         \item with $v \leq i \cdot \epsilon$ with $i \leq \frac{1}{\epsilon}$
@@ -466,46 +488,48 @@
         R(i,j,k) = & \max_{j' \leq j} R(i-1, j', k-j) \\ &+ q_i \cdot \bar{F_i}'(k \cdot \epsilon^2)\cdot (i \cdot j - k)\epsilon^2
       \end{align*}
     \end{column}
-    \begin{column}{.4\textwidth}
+    \begin{column}{.3\textwidth}
       \begin{center}
-        \begin{tikzpicture}[
-            node/.style={circle, draw=black, fill=gray!20, scale=.4},
-            axis/.style={->, thick},
-            gridline/.style={gray, dashed}
-          ]
+        \resizebox{1.1\textwidth}{!}{
+          \begin{tikzpicture}[
+              node/.style={circle, draw=black, fill=gray!20, scale=.4},
+              axis/.style={->, thick},
+              gridline/.style={gray, dashed}
+            ]
 
-          \draw[axis] (0, 0) -- (3.5, 0) node[right] {$i$};
-          \draw[axis] (0, 0) -- (0, 3.5) node[above] {$j$};
+            \draw[axis] (0, 0) -- (3.5, 0) node[right] {$i$};
+            \draw[axis] (0, 0) -- (0, 3.5) node[above] {$j$};
 
-          \foreach \x in {1, 2, 3} {
-              \draw[gridline] (\x, 0) -- (\x, 3.5);
-              \draw[gridline] (0, \x) -- (3.5, \x);
-            }
+            \foreach \x in {1, 2, 3} {
+                \draw[gridline] (\x, 0) -- (\x, 3.5);
+                \draw[gridline] (0, \x) -- (3.5, \x);
+              }
 
-          \foreach \i in {1, 2, 3} {
-              \foreach \j in {1, 2, 3} {
-                  \ifthenelse{\i=3\and\j=2}
-                  {
-                    \node[node, fill=green!20] at (\i, \j) {$R(\i,\j,k)$};
-                  }
-                  {
-                    \ifthenelse{\i=2\and\j<3}
+            \foreach \i in {1, 2, 3} {
+                \foreach \j in {1, 2, 3} {
+                    \ifthenelse{\i=3\and\j=2}
                     {
-                      \node[node, fill=blue!20] at (\i, \j) {$R(\i,\j,k)$};
+                      \node[node, fill=green!20] at (\i, \j) {$R(\i,\j,k)$};
                     }
                     {
-                      \node[node] at (\i, \j) {$R(\i,\j,k)$};
+                      \ifthenelse{\i=2\and\j<3}
+                      {
+                        \node[node, fill=blue!20] at (\i, \j) {$R(\i,\j,k)$};
+                      }
+                      {
+                        \node[node] at (\i, \j) {$R(\i,\j,k)$};
+                      }
                     }
                   }
-                }
-            }
+              }
 
-          \node at (0, 0) [below left] {0};
-          \foreach \x in {1, 2, 3, 3} {
-              \node at (0, \x) [left] {\x};
-              \node at (\x, 0) [below] {\x};
-            }
-        \end{tikzpicture}
+            \node at (0, 0) [below left] {0};
+            \foreach \x in {1, 2, 3, 3} {
+                \node at (0, \x) [left] {\x};
+                \node at (\x, 0) [below] {\x};
+              }
+          \end{tikzpicture}
+        }
       \end{center}
     \end{column}
   \end{columns}
@@ -580,6 +604,6 @@
   \printbibliography[heading=none]
 \end{frame}
 
-\section{Questions}
+\section{Questions \faQuestionCircle}
 
 \end{document}
