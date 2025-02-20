@@ -2,6 +2,7 @@
 \usepackage[margin=1in]{geometry}
 
 \usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
 \usepackage{pgf, tikz}
 \usepackage{xspace, units}
 \usepackage{typearea}
@@ -38,15 +39,107 @@
 
 \maketitle
 
-\cite{primary}
+\begin{abstract}
+    Test
+\end{abstract}
 
-Text goes here äöüß
+\begin{section}{Introduction}
+ Commonly in mechinism design problems auctions are modeled as free to participate in.
+ However this does not necessarily reflect how in reality mechanism exist.
+ For example one might need to invest travel costs to arrive to an aution or incur some cost of opportunity.
+ All those costs we refer to as participation costs of an auction.
+ As buyers might not be convinced to share those costs publically beforehand, e.g. since it is a sensitive information, we are studying the problem of private participation costs.
 
-$x \in \RR$
+ Recall the setting of the single item auction.
+ There is a set $\mathcal{N}$ of $n$ buyers that have interest in buying an item.
+ Each buyer has a private valuation $v_i \in \RR_{\geq 0}$.
+ A mechanism is a tuple $\mathcal{M} = (x,p)$ of an allocation function $x: \RR \rightarrow [0,1]^n$ and a payment function $p: \RR \rightarrow \RR^n$.
+ A players utility with respect to that mechanism is defined as $u_i^\mathcal{M}(v_i) = v_i x_i(v_i) - p_i(v_i)$.
 
-\[
-\Pr{X \geq 1} \leq \Ex{X}
-\]
+ To model the private participation costs, each player now additionally has participation costs $c_i \in \RR$ \cite{primary}.
+ The mechanism $\mathcal{M}' = (x', p')$ will now respect that participation costs as well.
+ An player's utility is now reduced by her participation cost if she participates.
+
+ \begin{align*}
+     u_i^{\mathcal{M}'} = \begin{cases}
+                              v_i x_i(v_i, c_i) - p_i(v_i, c_i) - c_i & \text{if $i$ participates} \\
+                              0                                       & \text{otherwise}
+                          \end{cases}
+ \end{align*}
+
+ We will now call a player's type the tuple of valuation and participation cost $t_i = (v_i, c_i)$.
+ We study the setting where each player's type is drawn from a distribution $\bar{F_i}$.
+\end{section}
+
+\begin{section}{}
+ In auction design one usually tries to find incentive compatible mechanism and then to maximize the revenue under the assumptions that players reveil their type thruthfully.
+
+ For the first part, in usually single parameter mechanisms \cite{myerson} found a clear characterization of a thruthful mechanism.
+
+ \begin{lemma}[\cite{myerson}]
+     For single parameter environments, an allocation rule $x$ is implementable if and only if it is monotone.
+     If $x$ is monotone, then there exists a unique payment rule $p$, s.t. the mechanism $M=(x,p)$ is truthful
+     and $p$ is given by:
+     \begin{align*}
+         p(v) = v x(v) - \int_0^v x(t) dt + p_0
+     \end{align*}
+ \end{lemma}
+
+ Also \cite{primary} came up with a characterization of mechanism which are enough to focus on.
+
+ \begin{lemma}{\cite{primary}}
+     \label{lemma:thruthful-mechanism}
+     It is without loss for seller to commit to a truthful single parameter mechanism $\mathcal{M}=(x,p)$ and
+     for the buyer to participate and truthfully reveal v if and only if $u^\mathcal{M}(v) = \int_0^v x(z)dz - p_0 \geq c$.
+ \end{lemma}
+
+ Next to maximize the mechanism one has to find its characteristics as well.
+ In the single parameter setting, \cite{myerson} provided such as well.
+
+ \begin{lemma}[\cite{myerson}, Single Buyer]
+     Let $\mathcal{M}=(x,p)$ be a truthful single-parameter mechanism, then the expected revenue equals the expected virtual welfare. That is
+     \begin{align*}
+         \mathbf{E}_v\left[p(v)\right]
+         = \mathbf{E}_v\left[x(v)\varphi(v)\right] + p_0
+     \end{align*}
+
+     where $\varphi(t) = t - \frac{1 - F(t)}{f(t)}$
+ \end{lemma}
+
+ Following from that we derive a expression for the expected revenue for private participation costs.
+ For that we first formulize the mechanism decribed in \autoref{lemma:thruthful-mechanism}.
+
+ Given a thruthful single parameter mechanism $\mathcal{M}=(x,p)$.
+ For that, we define $v_x(c)$ as the minimum value a player must have, s.t. she would still participate in the mechanism $\mathcal{M}$ when having participation cost $c$.
+
+ \begin{align*}
+     v_x(c) = \inf_{v \in \RR_{\geq 0}} \{vx(v) - p(v) \geq c\}
+ \end{align*}
+
+ Next we can define the allocation function $x_c$ as simply implementing the characterization of \autoref{lemma:thruthful-mechanism},
+ by allocating $x(v)$ if the player has a value that is at least $v_x(c)$ and $0$ otherwise.
+
+ If we now define a virtual value function that is conditional on $c$, by using the conditional cumulative distribution $\bar{F}_c$ and the conditional densitiy function $\hat{f}_c$ as
+ $\varphi_c(v) = v - (1- \bar{F}_c(v)) / \hat{f}_c(v)$ then we can express the expected revenue in \autoref{theorem:expected-revenue}.
+
+ \begin{theorem}[\cite{primary}]
+    \label{theorem:expected-revenue}
+     Given any $\bar{F}$ with marginal cost distribution $G$, any mechanism $\mathcal{M}=(x,p)$, then the expected revenue $\mathbf{E}_{t \sim \bar{F}}\left[p_c(v)\right]$ of the seller is
+
+     \begin{align*}
+         \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \max\{-p_0,c\}\right]
+     \end{align*}
+ \end{theorem}
+
+ \begin{proof}
+    We proof this using a case distinction and drawing the expectation around it.
+    First start by fixing $c$ arbitrarily.
+    Consider the case that $c > -p_0$. Note that $-p_0$ corresponds to a payment the player would get from the mechanism for participating.
+    That means in the case that $c > -p_0$, we do not simply always participate, since our utility could be negative. 
+    Therefore we also have $v_x(c) > 0$. 
+ \end{proof}
+
+\end{section}
 
 \bibliographystyle{plain}
 \bibliography{references} % Insert name of .bib file
