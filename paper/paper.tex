@@ -27,7 +27,8 @@
 \newcommand{\RR}{\ensuremath{\mathbb{R}}}
 
 \renewcommand{\Pr}[1]{\mbox{\rm\bf Pr}\left[#1\right]}
-\newcommand{\Ex}[1]{\mbox{\rm\bf E}\left[#1\right]}
+\newcommand{\Ex}[2][]{\mbox{\rm\bf E}_{#1}\left[#2\right]}
+\newcommand{\1}[1]{\mbox{\rm\bf 1}_{#1}}
 
 \author{Ayk Borstelmann}
 
@@ -96,7 +97,9 @@
  Next to maximize the mechanism one has to find its characteristics as well.
  In the single parameter setting, \cite{myerson} provided such as well.
 
- \begin{lemma}[\cite{myerson}, Single Buyer]
+ \begin{lemma}[\cite{myerson}, Myerson Revenue]
+     \label{lemma:myerson-revenue}
+
      Let $\mathcal{M}=(x,p)$ be a truthful single-parameter mechanism, then the expected revenue equals the expected virtual welfare. That is
      \begin{align*}
          \mathbf{E}_v\left[p(v)\right]
@@ -119,11 +122,21 @@
  Next we can define the allocation function $x_c$ as simply implementing the characterization of \autoref{lemma:thruthful-mechanism},
  by allocating $x(v)$ if the player has a value that is at least $v_x(c)$ and $0$ otherwise.
 
+ \begin{align*}
+     x_c(v) = \begin{cases}
+                  x(v) & v \geq v_x(c)    \\
+                  0    & \text{otherwise}
+              \end{cases}
+ \end{align*}
+
+ Similar the payment rule $p_c(v)$ delegates the the payment rule $p$ in the case that $v \geq v_x(c)$ and otherwise expects no payment.
+ Together, they define the mechanism $\mathcal{M}_c = (x_c, p_c)$ induced by the mechanism $\mathcal{M}$.
+
  If we now define a virtual value function that is conditional on $c$, by using the conditional cumulative distribution $\bar{F}_c$ and the conditional densitiy function $\hat{f}_c$ as
  $\varphi_c(v) = v - (1- \bar{F}_c(v)) / \hat{f}_c(v)$ then we can express the expected revenue in \autoref{theorem:expected-revenue}.
 
  \begin{theorem}[\cite{primary}]
-    \label{theorem:expected-revenue}
+     \label{theorem:expected-revenue}
      Given any $\bar{F}$ with marginal cost distribution $G$, any mechanism $\mathcal{M}=(x,p)$, then the expected revenue $\mathbf{E}_{t \sim \bar{F}}\left[p_c(v)\right]$ of the seller is
 
      \begin{align*}
@@ -132,11 +145,79 @@
  \end{theorem}
 
  \begin{proof}
-    We proof this using a case distinction and drawing the expectation around it.
-    First start by fixing $c$ arbitrarily.
-    Consider the case that $c > -p_0$. Note that $-p_0$ corresponds to a payment the player would get from the mechanism for participating.
-    That means in the case that $c > -p_0$, we do not simply always participate, since our utility could be negative. 
-    Therefore we also have $v_x(c) > 0$. 
+     We proof this using a case distinction and drawing the expectation around it.
+     First start by fixing $c$ arbitrarily.
+     Consider the case that $c > -p_0$. Note that $-p_0$ corresponds to a payment the player would get from the mechanism for participating.
+     That means in the case that $c > -p_0$, we do not simply always participate, since our utility could be negative. Therefore we also have $v_x(c) > 0$.
+
+     We first consider the case that we partipate, i.e. $v \geq v_x(c)$.
+     In that case the payment the player has to pay the payment $p(v)$ of the single parameter mechanism.
+
+     \begin{align}
+         \label{eq:payment-participating}
+         p_c(v) = p(v) = v x(v) - \int_0^v x(t) dt + p_0
+     \end{align}
+
+     We use linearity of the intergral and the definition of utility to express this in terms of the allocation function $x_c$.
+     \begin{align*}
+         \int_0^v x(t) dt & = \int_0^{v_c(x)} x(t) dt + \int_{v_c(x)}^v x(t) dt     \\
+                          & = u^\mathcal{M}(v_c(x)) + p_0 + \int_{v_c(x)}^v x(t) dt \\
+                          & = c + p_0 + \int_{v_c(x)}^v x(t) dt
+     \end{align*}
+     Here the last step uses that $u^\mathcal{M}(v_c(x)) = c$ per definition of $v_c(x)$.
+
+     Plugging this into \autoref{eq:payment-participating} yields
+     \begin{align*}
+         p_c(v) = v x_c(v) - \int_0^v x_c(t) dt - c
+     \end{align*}
+
+     Next we consider the case that the player does not partitipate, i.e. $v < v_x(c)$.
+     In that case, the payment rule requests no payment, i.e. $p_c(v) = 0$, yet conveniently some part of the expression found before are also $0$:
+
+     \begin{align*}
+         p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt
+     \end{align*}
+
+     Thus we can represent this entire case using an inditcator function:
+     \begin{align*}
+         p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt - c \1{v \geq v_x(c)}
+     \end{align*}
+
+     Drawing the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields
+
+     \begin{align*}
+         \Ex[v \sim \bar{F}_c]{p_c(v)} & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t) dt - c \1{v \geq v_x(c)}}   \\
+                                       & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t) dt} - \Pr{v \geq v_x(c)}c   \\
+                                       & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} - (1 - \bar{F}_c(v_x(c))) \cdot c \\
+     \end{align*}
+
+     Here in the last step we used that for fixed $c$, $M_c$ is a thruthful mechanism thus we can apply \autoref{lemma:myerson-revenue} and we also used the cumulative distribution.
+
+     Now we consider the opposite case, that is that $c \leq -p_0$.
+     Analogously to the case before, $c \leq -p_0$ means that the mechanism's payment for simply participating already pays of our participation cost.
+     Certainly in that case $v_x(c) = 0$.
+
+     Therefore the player always participates and pays $p(v)$. In the case that $v_x(c) = 0$, we have $x_c(v) = x(v)$ for all $v \in \RR_{\geq 0}$, therefore:
+     \begin{align*}
+         p_c(v) = p(v) = v x(v) - \int_0^v x(t)dt + p_0 = v x_c(v) - \int_0^v x_c(t)dt + p_0
+     \end{align*}
+
+     Drawing again the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields
+
+
+     \begin{align*}
+         \Ex[v \sim \bar{F}_c]{p_c(v)} & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t)dt + p_0}                  \\
+                                       & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + p_0                           \\
+                                       & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + (1 - \bar{F}_{c}(v_x(c))) p_0
+     \end{align*}
+
+     Where in the last equality, we used that since $v_x(c) = 0$, $\bar{F}_{c}(v_x(c)) = 0$ as well.
+
+     Now we can finally draw the expectation around the previously fixed $c$ and get to the wished theorem:
+
+     \begin{align*}
+         \Ex{p_c(v)} & = \Ex[c \sim G]{\Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + (1 - \bar{F}_{c}(v_x(c))) \max\{c, -p_0\} }
+     \end{align*}
  \end{proof}
 
 \end{section}
