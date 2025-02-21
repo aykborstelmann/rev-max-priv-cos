@@ -45,11 +45,11 @@
 \end{abstract}
 
 \begin{section}{Introduction}
- Commonly in mechinism design problems auctions are modeled as free to participate in.
- However this does not necessarily reflect how in reality mechanism exist.
- For example one might need to invest travel costs to arrive to an aution or incur some cost of opportunity.
+ Commonly in mechanism design problems auctions are modeled as free to participate in.
+ However, this does not necessarily reflect how in reality mechanism exist.
+ For example one might need to invest travel costs to arrive to an auction or incur some cost of opportunity.
  All those costs we refer to as participation costs of an auction.
- As buyers might not be convinced to share those costs publically beforehand, e.g. since it is a sensitive information, we are studying the problem of private participation costs.
+ As buyers might not be convinced to share those costs publically beforehand, e.g. since it is sensitive information, we are studying the problem of private participation costs.
 
  Recall the setting of the single item auction.
  There is a set $\mathcal{N}$ of $n$ buyers that have interest in buying an item.
@@ -73,9 +73,9 @@
 \end{section}
 
 \begin{section}{}
- In auction design one usually tries to find incentive compatible mechanism and then to maximize the revenue under the assumptions that players reveil their type thruthfully.
+ In auction design one usually tries to find incentive compatible mechanism and then to maximize the revenue under the assumptions that players reveal their type truthfully.
 
- For the first part, in usually single parameter mechanisms \cite{myerson} found a clear characterization of a thruthful mechanism.
+ For the first part, in usually single parameter mechanisms \cite{myerson} found a clear characterization of a truthful mechanism.
 
  \begin{lemma}[\cite{myerson}]
      For single parameter environments, an allocation rule $x$ is implementable if and only if it is monotone.
@@ -86,7 +86,7 @@
      \end{align*}
  \end{lemma}
 
- Also \cite{primary} came up with a characterization of mechanism which are enough to focus on.
+ Also, \cite{primary} came up with a characterization of mechanism which are enough to focus on.
 
  \begin{lemma}{\cite{primary}}
      \label{lemma:thruthful-mechanism}
@@ -109,10 +109,10 @@
      where $\varphi(t) = t - \frac{1 - F(t)}{f(t)}$
  \end{lemma}
 
- Following from that we derive a expression for the expected revenue for private participation costs.
- For that we first formulize the mechanism decribed in \autoref{lemma:thruthful-mechanism}.
+ Following from that we derive an expression for the expected revenue for private participation costs.
+ For that we first formulize the mechanism described in \autoref{lemma:thruthful-mechanism}.
 
- Given a thruthful single parameter mechanism $\mathcal{M}=(x,p)$.
+ Given a truthful single parameter mechanism $\mathcal{M}=(x,p)$.
  For that, we define $v_x(c)$ as the minimum value a player must have, s.t. she would still participate in the mechanism $\mathcal{M}$ when having participation cost $c$.
 
  \begin{align*}
@@ -129,10 +129,10 @@
               \end{cases}
  \end{align*}
 
- Similar the payment rule $p_c(v)$ delegates the the payment rule $p$ in the case that $v \geq v_x(c)$ and otherwise expects no payment.
+ Similar the payment rule $p_c(v)$ delegates the payment rule $p$ in the case that $v \geq v_x(c)$ and otherwise expects no payment.
  Together, they define the mechanism $\mathcal{M}_c = (x_c, p_c)$ induced by the mechanism $\mathcal{M}$.
 
- If we now define a virtual value function that is conditional on $c$, by using the conditional cumulative distribution $\bar{F}_c$ and the conditional densitiy function $\hat{f}_c$ as
+ If we now define a virtual value function that is conditional on $c$, by using the conditional cumulative distribution $\bar{F}_c$ and the conditional density function $\hat{f}_c$ as
  $\varphi_c(v) = v - (1- \bar{F}_c(v)) / \hat{f}_c(v)$ then we can express the expected revenue in \autoref{theorem:expected-revenue}.
 
  \begin{theorem}[\cite{primary}]
@@ -145,12 +145,12 @@
  \end{theorem}
 
  \begin{proof}
-     We proof this using a case distinction and drawing the expectation around it.
+     We proof this using a case distinction and then draw the expectation.
      First start by fixing $c$ arbitrarily.
      Consider the case that $c > -p_0$. Note that $-p_0$ corresponds to a payment the player would get from the mechanism for participating.
-     That means in the case that $c > -p_0$, we do not simply always participate, since our utility could be negative. Therefore we also have $v_x(c) > 0$.
+     That means in the case that $c > -p_0$, we do not simply always participate, since our utility could be negative. Therefore, we also have $v_x(c) > 0$.
 
-     We first consider the case that we partipate, i.e. $v \geq v_x(c)$.
+     We first consider the case that we participate, i.e. $v \geq v_x(c)$.
      In that case the payment the player has to pay the payment $p(v)$ of the single parameter mechanism.
 
      \begin{align}
@@ -158,7 +158,7 @@
          p_c(v) = p(v) = v x(v) - \int_0^v x(t) dt + p_0
      \end{align}
 
-     We use linearity of the intergral and the definition of utility to express this in terms of the allocation function $x_c$.
+     We use linearity of the integral and the definition of utility to express this in terms of the allocation function $x_c$.
      \begin{align*}
          \int_0^v x(t) dt & = \int_0^{v_c(x)} x(t) dt + \int_{v_c(x)}^v x(t) dt     \\
                           & = u^\mathcal{M}(v_c(x)) + p_0 + \int_{v_c(x)}^v x(t) dt \\
@@ -171,14 +171,14 @@
          p_c(v) = v x_c(v) - \int_0^v x_c(t) dt - c
      \end{align*}
 
-     Next we consider the case that the player does not partitipate, i.e. $v < v_x(c)$.
+     Next we consider the case that the player does not participate, i.e. $v < v_x(c)$.
      In that case, the payment rule requests no payment, i.e. $p_c(v) = 0$, yet conveniently some part of the expression found before are also $0$:
 
      \begin{align*}
          p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt
      \end{align*}
 
-     Thus we can represent this entire case using an inditcator function:
+     Thus, we can represent this entire case using an indicator function:
      \begin{align*}
          p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt - c \1{v \geq v_x(c)}
      \end{align*}
@@ -191,13 +191,13 @@
                                        & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} - (1 - \bar{F}_c(v_x(c))) \cdot c \\
      \end{align*}
 
-     Here in the last step we used that for fixed $c$, $M_c$ is a thruthful mechanism thus we can apply \autoref{lemma:myerson-revenue} and we also used the cumulative distribution.
+     Here in the last step we used that for fixed $c$, $M_c$ is a truthful mechanism thus we can apply \autoref{lemma:myerson-revenue}, and we also used the cumulative distribution.
 
      Now we consider the opposite case, that is that $c \leq -p_0$.
      Analogously to the case before, $c \leq -p_0$ means that the mechanism's payment for simply participating already pays of our participation cost.
      Certainly in that case $v_x(c) = 0$.
 
-     Therefore the player always participates and pays $p(v)$. In the case that $v_x(c) = 0$, we have $x_c(v) = x(v)$ for all $v \in \RR_{\geq 0}$, therefore:
+     Therefore, the player always participates and pays $p(v)$. In the case that $v_x(c) = 0$, we have $x_c(v) = x(v)$ for all $v \in \RR_{\geq 0}$, therefore:
      \begin{align*}
          p_c(v) = p(v) = v x(v) - \int_0^v x(t)dt + p_0 = v x_c(v) - \int_0^v x_c(t)dt + p_0
      \end{align*}
