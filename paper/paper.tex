@@ -59,14 +59,13 @@
  Commonly in mechanism design problems auctions are modeled as free to participate in.
  However, this does not necessarily reflect how in reality mechanism exist.
  For example, consider the case that for moving to a new city one wants to buy a house that is sold in an auction.
- To participate there one at least need to be present and therefore might pay for travel, accommodation and also incur some loss opportunity for not being at the regular workplace.
+ To participate there, one at least need to be present and therefore might pay for travel, accommodation and also incur some loss opportunity for not being elsewhere.
  All those costs we refer to as participation costs of an auction for this buyer.
  As buyers might not be convinced to share those costs publically beforehand, e.g. since it might be sensitive information, we are studying the problem of private participation costs.
 
- We study this mechanism design problem.
- Based on the work of \citet{primary}, we derive a model in \autoref{sec:model} that incorporates private participation costs as well as valuations.
+ In this article based on the work of \citet{primary}, we derive a model in \autoref{sec:model} that incorporates private participation costs as well as valuations.
  Next we focus on finding a formulation of the expected revenue that is to be maximized as also done by \citet{myerson} in \autoref{sec:incentive-comptaible-mechanism-revenue}.
- We will see that this problem because inherently non-convex and thus we focus on finding an FPTAS that achieves a $\mathrm{OPT} - 4\epsilon$ approximation of the optimum single buyer mechanism in \autoref{sec:revenue-maximization}.
+ We will see that this problem becomes inherently non-convex and thus we focus on finding an FPTAS that achieves a $\mathrm{OPT} - 4\epsilon$ approximation where $\mathrm{OPT}$ refers to the optimal single buyer mechanism in \autoref{sec:revenue-maximization}.
 \end{section}
 
 \begin{section}{Model}
@@ -78,8 +77,8 @@
  A buyer's utility with respect to that mechanism is defined as $u_i^\mathcal{M}(v_i) = v_i x_i(v_i) - p_i(v_i)$.
 
  To model the private participation costs, each buyer now additionally has participation costs $c_i \in \RR$ \cite{primary}.
- The mechanism $\mathcal{M}' = (x', p')$ will now respect that participation costs as well.
- An buyer's utility is now reduced by her participation cost if she participates.
+ The mechanism $\mathcal{M}' = (x', p')$ will respect that participation costs as well.
+ A buyer's utility is reduced by her participation cost if she participates.
 
  \begin{align*}
      u_i^{\mathcal{M}'} = \begin{cases}
@@ -87,34 +86,33 @@
                               0                                       & \text{otherwise}
                           \end{cases}
  \end{align*}
-
- We will now call a buyer's type the tuple of valuation and participation cost $t_i = (v_i, c_i)$.
+ We will call a buyer's type the tuple of valuation and participation cost $t_i = (v_i, c_i)$.
  We study the setting where each buyer's type is drawn from a distribution $\bar{F_i}$.
 \end{section}
 
 \begin{section}{Single Buyer Mechanism Design}
  In this work, the entire focus lies on the case where there exists only a single buyer.
  Thus, the subscript $i$ in our notation will be dropped.
- Later we will give an outlook on how \citet{primary} employ a reduction from the many-buyer mechanism design problem to the single buyer one.
+ Later we will give an outlook on how \citet{primary} employ a reduction from the many-buyer mechanism design problem to the single-buyer one.
  This reduction framework was first introduced by \citet{alaei2012bayesian,alaei2014bayesian}.
 
  \subsection{Incentive Compatible Mechanism \& Revenue}
  \label{sec:incentive-comptaible-mechanism-revenue}
  In auction design one usually tries to find incentive compatible mechanism and then to maximize the revenue under the assumptions that buyers reveal their type truthfully.
 
- For the first part, in usually single parameter mechanisms \citet{myerson} found a clear characterization of a truthful mechanism (\autoref{lemma:myersons-lemma}).
+ For the first part, in common single parameter mechanisms \citet{myerson} found a clear characterization of a truthful mechanism (\autoref{lemma:myersons-lemma}).
 
  \begin{lemma}[Myerson's Lemma \cite{myerson}]
      \label{lemma:myersons-lemma}
      For single parameter environments, an allocation rule $x$ is implementable if and only if it is monotone.
-     If $x$ is monotone, then there exists a unique payment rule $p$, s.t. the mechanism $\mathcal{M}=(x,p)$ is truthful
+     If $x$ is monotone, then there exists a payment rule $p$, s.t. the mechanism $\mathcal{M}=(x,p)$ is truthful
      and $p$ is given by:
      \begin{align*}
          p(v) = v x(v) - \int_0^v x(t) dt + p_0
      \end{align*}
  \end{lemma}
 
- Also, \citet{primary} found that we can base our work on Myerson's Lemma (\ref{lemma:myersons-lemma})
+ \citet{primary} found that we can base our work on Myerson's Lemma (\ref{lemma:myersons-lemma})
  by generalizing a truthful single-parameter mechanism to a one that takes participation cost into account (\autoref{lemma:thruthful-mechanism}).
 
  \begin{lemma}[Incentive Compatibile Mechanism \cite{primary}]
@@ -123,7 +121,7 @@
      for the buyer to participate and truthfully reveal v if and only if $u^\mathcal{M}(v) = \int_0^v x(z)dz - p_0 \geq c$.
  \end{lemma}
 
- Next to maximize the mechanism one has to find its characteristics as well.
+ Next to maximize the expected revenue, it is convenient to have a formulation for it.
  In the single parameter setting, again \citet{myerson} provided such as well (\autoref{lemma:myerson-revenue}).
 
  \begin{lemma}[Myerson's Revenue \cite{myerson}]
@@ -251,7 +249,7 @@
      \begin{align*}
          p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt - c \1{v \geq v_x(c)}
      \end{align*}
-     Drawing the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields
+     Drawing the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields:
      \begin{equation}
          \label{eq:expected-revenue-first-case}
          \begin{aligned}
@@ -260,16 +258,16 @@
                                            & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} - (1 - \bar{F}_c(v_x(c))) \cdot c \\
          \end{aligned}
      \end{equation}
-     Here in the last step we used that for fixed $c$, $M_c$ is a truthful mechanism thus we can apply \autoref{lemma:myerson-revenue}, simultaneously we use the definition of the cumulative distribution.
+     Here in the last step we used that for fixed $c$, $\mathcal{M}_c$ is a truthful mechanism thus we can apply \autoref{lemma:myerson-revenue}, simultaneously we use the definition of the cumulative distribution.
 
-     Now we consider the opposite case, that is that $c \leq -p_0$.
+     Now we consider the opposite case, that is $c \leq -p_0$.
      Analogously to the case before, $c \leq -p_0$ means that the mechanism's payment for simply participating already pays of our participation cost.
-     Certainly in that case $v_x(c) = 0$.
-     Therefore, the buyer always participates and pays $p(v)$. In the case that $v_x(c) = 0$, we have $x_c(v) = x(v)$ for all $v \in \RR_{\geq 0}$, therefore:
+     Certainly in that case $v_x(c) = 0$ and the buyer always participates and pays $p(v)$.
+     Since $v_x(c) = 0$, we have $x_c(v) = x(v)$ for all $v \in \RR_{\geq 0}$, therefore:
      \begin{align*}
          p_c(v) = p(v) = v x(v) - \int_0^v x(t)dt + p_0 = v x_c(v) - \int_0^v x_c(t)dt + p_0
      \end{align*}
-     Drawing again the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields
+     Drawing again the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields:
      \begin{equation}
          \label{eq:expected-revenue-second-case}
          \begin{aligned}
@@ -288,7 +286,7 @@
  \end{proof}
 
  Since we focus on revenue maximization, it is w.l.o.g. to consider $p_0 \geq 0$.
- Further \citet{primary} showed that for any mechanism with $p_0 \geq 0$ there exists a mechanism with weakly higher revenue with $p_0 = 0$.
+ Further \citet{primary} showed that for any mechanism with $p_0 \geq 0$ there exists a mechanism with weakly higher revenue that has $p_0 = 0$.
  Therefore, from now on, we disregard $p_0$.
 
  \subsection{Revenue Maximization}
@@ -297,7 +295,7 @@
  We observe that this problem is inherently non-convex.
  Even more, \citet{primary} showed that for multiple buyer it is not even representable as a convex program in general.
  Due to that, we cannot hope to calculate revenue optimal mechanisms in general in polynomial time.
- Therefore, \citet{primary} propose to introduce a fully polynomial-time approximation scheme (FPTAS).
+ \citet{primary} propose to introduce a fully polynomial-time approximation scheme (FPTAS).
 
  First we focus on type distributions $\bar{F}$ where $v$ is normalized to $[0,1]$.
  Next, let $\epsilon \in (0, 1)$ be the approximation degree.
@@ -306,13 +304,13 @@
 
  This leads us to a problem definition for which an optimal mechanism is computable in polynomial time with respect to $\frac{1}{\epsilon}$.
  We will see later how to do this.
- Still it is not clear that this mechanism is close to the optimal mechanism for the original problem.
+ Still it is not clear that this mechanism is close to the optimal mechanism for the original problem, here \autoref{theorem:approximation-guarantee} comes into play.
 
  \begin{theorem}
      \label{theorem:approximation-guarantee}
      Let $\mathrm{Rev}(\bar{F}, \mathcal{M})$ be the revenue of mechanism $\mathcal{M}$ on type distribution $\bar{F}$.
      For any type distribution $\bar{F}$ supported on $[0,1]^2$, for any $\epsilon \in (0,1)$,
-     the optimal mechanism $\mathcal{M}'$ on $\bar{F}'$ that only allocates multiples of $\epsilon$, achieves an expected revenue $\mathrm{Rev}(\bar{F},\mathcal{M}')$ of at least
+     the optimal mechanism $\mathcal{M}'$ on $\bar{F}'$ that only allocates multiples of $\epsilon$ and having a monotone allocation rule, achieves an expected revenue $\mathrm{Rev}(\bar{F},\mathcal{M}')$ of at least
      $\mathrm{OPT}(\bar{F}) - 4\epsilon$, where $\mathrm{OPT}(\bar{F})$ refers to the optimal expected revenue on $\bar{F}$.
  \end{theorem}
 
@@ -331,7 +329,7 @@
 
  \begin{proof}[Proof of \autoref{theorem:approximation-guarantee}.]
      For any $\bar{F}$, let $\mathcal{M}'$ be the optimal mechanism on the discretized type distribution $\bar{F}'$ for which the allocation rule is also discretized.
-     First, since we defined $\bar{F}'$ as the \textit{rounded down} type distribution, for any mechanism $\mathcal{M}$ holds, that $\mathrm{Rev}(\bar{F}, \mathcal{M}) \geq \mathrm{Rev}(\bar{F}', \mathcal{M})$, so in particular this also applies to $\mathcal{M}'$.
+     First, since we defined $\bar{F}'$ as the \textit{rounded down} type distribution, for any mechanism $\mathcal{M}$ with monotone allocation rule holds, that $\mathrm{Rev}(\bar{F}, \mathcal{M}) \geq \mathrm{Rev}(\bar{F}', \mathcal{M})$, so in particular this also applies to $\mathcal{M}'$.
 
      Next, we define $\widehat{\mathcal{M}}$ as the optimal mechanism on $\bar{F}'$ (one that is allowed to allocate continuous values).
      We use \autoref{lemma:allocation-function-within-e}, since our allocation function $x'$ of mechanism $\mathcal{M}'$
@@ -360,10 +358,10 @@
  in order to also get a truthful mechanism.
  Note that \autoref{lemma:thruthful-mechanism} also tells us, that it is enough to find a single parameter allocation rule and optimize the revenue of the induced mechanism $\mathcal{M}_c$ with payment rule $p_c$.
 
- For $i,j \leq \frac{1}{\epsilon}$ and $k \leq \frac{1}{\epsilon^2}$,
+ For integers $i,j \leq \frac{1}{\epsilon}$ and $k \leq \frac{1}{\epsilon^2}$,
  we define $R(i,j,k)$ as the optimal revenue from only a subset of the buyers, those that have a value $v \leq i \epsilon$
  and while the allocation function is fixed for $i\epsilon$ to $x(i \epsilon) = j \epsilon$ and the utility is also fixed to $u(i \epsilon) = k \epsilon^2$.
- Observe that in this formulation, we can express it in terms of an expectation:
+ Observe this formulation can be express it in terms of an expectation:
 
  \begin{equation}
      \label{eq:rijk}
@@ -452,7 +450,7 @@
      \begin{align*}
          R(i,j,k) = \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq i\epsilon}\Ex{p_c(v)\mid v \leq i \epsilon}
      \end{align*}
-     Observe that we can use the linearity of expectation to split up the expectation of \autoref{eq:rijk} into the case that $v \leq (i-1)\epsilon$ and the case that $v = \epsilon$.
+     Observe that we can use the linearity of expectation to split up the expectation of \autoref{eq:rijk} into the case that $v \leq (i-1)\epsilon$ and the case that $v = i \epsilon$.
 
      \begin{align*}
           & \Ex{p_c(v)\mid v \leq i \epsilon}                                                           \\
@@ -464,8 +462,8 @@
            & R(i,j,k)                                                                                                                                                                                             \\
          = & \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} (\Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} + \Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon})
      \end{align*}
-     Further, observe that for $p_c(v)$ in the second expectation, everything is already fixed through during the maximization, i.e. for the fixed value $v = i \epsilon$ the allocation is fixed and the utility is fixed, thus also the payment.
-     This means, we can pull out this term, since the maximization does not affect it.
+     Further, observe that for $p_c(v)$ in the second expectation, everything is already fixed with the maximization constraints, i.e. for the fixed value $v = i \epsilon$ the allocation is fixed and the utility is fixed, thus also the payment.
+     This means, we can pull out the second term, since the maximization does not affect it.
      So, we can focus on the term $\max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon)=k\epsilon^2} \Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon}$ on its own.
 
      Note that this is similar to \autoref{eq:rijk} with $v = (i-1) \epsilon$, only the maximization constraints differ.
@@ -501,9 +499,9 @@
           & = \Pr{c \geq u(i\epsilon)} \Ex{p_c(i\epsilon) \mid c \leq u(i\epsilon)}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2} \\
           & = \bar{F}_i'(k\epsilon^2) \Ex{p(i\epsilon)}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2}                             \\
           & = \bar{F}_i'(k\epsilon^2) \Ex{u(i\epsilon) - i\epsilon \cdot x(i\epsilon)}                                                      \\
-          & = \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2                                                                             \\
+          & = \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2
      \end{align*}
-     This yields for the second term:
+     This simplifies the second term to the following:
      \begin{align*}
            & \Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2} \\
          = & q_i \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2
@@ -516,7 +514,7 @@
  \end{proof}
 
  \subsection{Reduction to Multiple Buyer}
- Using the mechanism designed in \autoref{sec:revenue-maximization} for a single, \citet{primary} derive an approximate algorithm for multiple buyers.
+ Using the mechanism designed in \autoref{sec:revenue-maximization} for a single buyer, \citet{primary} derive an approximate algorithm for multiple buyers.
  For that they use that any algorithm allocating a single item to multiple buyers allocates the item in expectation to at most once.
  Therefore, the sum of ex-ante probabilities for allocating it to each buyer is also at most $1$.
  One now splits the probabilities into shares for each buyer while maximizing the revenue.
@@ -530,10 +528,9 @@
  In particular the focus lied on single item, single buyer auctions.
  First we characterized how regular single parameter truthful mechanisms can be employed on the model of private participation costs.
  Based on that, we derived the expected revenue for seller employing such mechanisms, yet noticed that the problem is non-convex.
- Due to that we approached the revenue maximization problem in an approximate manner, by discovering an FPTAS \cite{primary}.
+ Due to that we approached the revenue maximization problem in an approximate manner, by discovering a FPTAS \cite{primary}.
  This FPTAS uses a dynamic program to compute a $\mathrm{OPT}-4\epsilon$ approximation of the optimal revenue in $\mathcal{O}\left(\frac{1}{\epsilon^5}\right)$ time.
  Finally, we motivated how \citet{primary} used a sequential-opt-out-mechanism to solve the multiple buyers' problem approximately using the single buyer's FPTAS.
-
 \end{section}
 
 \bibliography{references} % Insert name of .bib file
