@@ -1,4 +1,7 @@
 \documentclass[11pt,a4paper]{article}
+\usepackage[english]{babel}
+\usepackage[square,numbers]{natbib}
+\bibliographystyle{abbrvnat}
 \usepackage[margin=1in]{geometry}
 
 \usepackage{amsmath,amssymb,amsthm}
@@ -72,7 +75,9 @@
  We study the setting where each player's type is drawn from a distribution $\bar{F_i}$.
 \end{section}
 
-\begin{section}{}
+\begin{section}{Single Buyer Mechanism Design}
+
+ \subsection{Incentive Compatible Mechanism \& Revenue}
  In auction design one usually tries to find incentive compatible mechanism and then to maximize the revenue under the assumptions that players reveal their type truthfully.
 
  For the first part, in usually single parameter mechanisms \cite{myerson} found a clear characterization of a truthful mechanism.
@@ -220,9 +225,191 @@
      \end{align*}
  \end{proof}
 
+ \subsection{Revenue Maximization}
+
+ We observe that this problem is inherently non-convex. Even more, \cite{primary} showed that it is not even reparameterizedable as a convex problem.
+ Due to that we cannot hope to calculate revenue optimal mechanisms in general in polynomial time.
+
+ Therefore, \cite{primary} propose to introduce a fully polynomial-time approximation scheme (FPTAS).
+
+ First we will normalize $v$ to $[0,1]$.
+ Next, let $\epsilon \in (0, 1)$ be the approximation degree.
+ Let $\bar{F}'$ be the value distribution with the value rounded down to the nearest multiple of $\epsilon$.
+ Since still there are infinitely many allocation functions, we discretize those two by only allocating multiples of $\epsilon$ as well.
+
+ This leads us to a problem definition for which an optimal mechanism is computable in polynomial time w.r.t. to $\frac{1}{\epsilon}$.
+ We will see later how to do this.
+ Still it is not clear that this mechanism is close to the optimal mechanism for the original problem.
+
+ \begin{theorem}
+     \label{theorem:approximation-guarantee}
+     Let $\mathrm{Rev}(\bar{F}, \mathcal{M})$ be the revenue of mechanism $\mathcal{M}$ on type distribution $\bar{F}$.
+     For any type distribution $\bar{F}$ supported on $[0,1]^2$, for any $\epsilon \in (0,1)$,
+     the optimal mechanism $\mathcal{M}'$ on $\bar{F}'$ that only allocates multiples of $\epsilon$, achieves an expected revenue $\mathrm{Rev}(\bar{F},\mathcal{M}')$ of at least
+     $\mathrm{OPT}(\bar{F}) - 4\epsilon$, where $\mathrm{OPT}(\bar{F})$ refers to the optimal expected revenue on $\bar{F}$.
+ \end{theorem}
+
+ To proof this we make use of the following lemmas without proofs:
+ \begin{lemma}[\citet{primary}]
+     \label{lemma:allocation-function-within-e}
+     For any distribution $\bar{F}$ supported on $[0,1]^2$ and for any pair of mechanisms $\mathcal{M}'$ and $\widehat{\mathcal{M}}$
+     with allocation rules $x'$ and $\hat{x}$, s.t. $x'(v) \in [\hat{x}(v), \hat{x}(v) + \epsilon]$ for all $\epsilon$, we have $\mathrm{Rev}(\bar{F}, \mathcal{M}') \geq \mathrm{Rev}(\bar{F}, \widehat{\mathcal{M}}) - \epsilon$.
+ \end{lemma}
+ \begin{lemma}[\citet{primary}]
+     \label{lemma:difference-in-optimal-mechanims}
+     Let $(\Omega, \mathcal{F}, P)$ be any probability measure and let $t_1, t_2: \Omega \rightarrow \mathbb{R}^2$ be two 2-dimensional random variables.
+     If $\sup_{\omega \in \Omega} || t_1(\omega) - t_2(\omega) ||_\infty \leq \epsilon$, then $|\mathrm{OPT}(t_1) - \mathrm{OPT}(t_2)| \leq 3\epsilon$.
+ \end{lemma}
+
+ \begin{proof}[Proof of \autoref{theorem:approximation-guarantee}.]
+     For any $\bar{F}$, let $\mathcal{M}'$ be the optimal mechanism on the discretized type distribution $\bar{F}'$ for which the allocation rule is also discretized.
+     First, since we defined $\bar{F}'$ as the \textit{rounded down} type distribution, for any mechanism $\mathcal{M}$ holds, that $\mathrm{Rev}(\bar{F}, \mathcal{M}) \geq \mathrm{Rev}(\bar{F}', \mathcal{M})$, so in particular this also applies to $\mathcal{M}'$.
+
+     Next, we define $\widehat{\mathcal{M}}$ as the optimal mechanism on $\bar{F}'$ (one that is allowed to allocate continuous values).
+     Next, we make use of \autoref{lemma:allocation-function-within-e}, since our allocation function $x'$ of mechanism $\mathcal{M}'$
+     allocates within an $\epsilon$-interval of the allocation function $\hat{x}$ of $\widehat{\mathcal{M}}$.
+     Thus, according to \autoref{lemma:allocation-function-within-e}, we got $\mathrm{Rev}(\bar{F}', \mathcal{M}') \geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon$.
+
+     Finally, note, that for the two type distributions $\bar{F}$ and $\bar{F}'$ it holds that they originate from the same probability measure, yet the value of the random variables differs by at most $\epsilon$.
+     Also note, that we did not round the participation cost, thus the difference with respect to the infinity-norm $|| \cdot ||_{\infty}$ is also at most $\epsilon$.
+     Therefore, we can apply \autoref{lemma:difference-in-optimal-mechanims}, since $\widehat{\mathcal{M}}$ is optimal mechanism on $\bar{F}'$,
+     we get $\mathrm{Rev}(\bar{F}', \widetilde{\mathcal{M}}) \geq \mathrm{OPT}(\bar{F}') - 3\epsilon$.
+
+     If we put now all together, we get:
+     \begin{align*}
+         \mathrm{Rev}(\bar{F}, \mathcal{M}') & \geq \mathrm{Rev}(\bar{F}', \mathcal{M}')                     \\
+                                             & \geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon \\
+                                             & \geq \mathrm{OPT}(\bar{F}') - 4\epsilon
+     \end{align*}
+ \end{proof}
+
+ Now that we know that the difference in the problem statement leads to an reasonable approximation guarantee,
+ we can now dedicate to finding an optimal mechanism for this problem.
+
+ We will use a dynamic program based on the approximation degree $\epsilon$ to calculate for all possible valuations
+ an allocation function that optimizes the revenue.
+ We will make sure this allocation rule is non-decreasing and will follow the payment rule through \autoref{lemma:thruthful-mechanism}
+ in order to also get a truthful mechanism.
+
+ For $i,j \leq \frac{1}{\epsilon}$ and $k \leq \frac{1}{\epsilon^2}$,
+ we define $R(i,j,k)$ as the optimal revenue from only a subset of the buyers, i.e. those that have a value $v \leq i \epsilon$
+ and for which the allocation function is fixed to $x(i \epsilon) = j \epsilon$ and the utility is also fixed to $u(i \epsilon) = k \epsilon^2$.
+ Observe that in this formulation, we can express it in terms of an expectation:
+
+ \begin{equation}
+     \label{eq:rijk}
+     R(i,j,k) = \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq i\epsilon}\Ex{p_c(v)\mid v \leq i \epsilon}
+ \end{equation}
+
+ \begin{theorem}
+     \label{theorem:recursion-formular}
+     For $i \geq 2$ $R(i,j,k)$ can be calculated as follows:
+
+     \begin{align*}
+         R(i,j,k) = \max_{j' \leq j} R(i-1, j, k - j) + q_i \bar{F}_i'(k \epsilon^2) \cdot (i\cdot j - k)\epsilon^2
+     \end{align*}
+
+     where $q_i$ refers to the occurrence probability of $v = i \epsilon$ and $\bar{F}_i'$ refers to the cumulative type distribution conditional on the value being $i\epsilon$.
+ \end{theorem}
+
+ From this we can directly deduce the following corollary.
+
+ \begin{corollary}
+     The optimal mechanism $\mathcal{M}'$ that only allocated multiple of $\epsilon$ on any discretized type distribution $\bar{F}'$
+     can be computed in $\mathcal{O}\left(\frac{1}{\epsilon^5}\right)$.
+ \end{corollary}
+ \begin{proof}
+     Observe that from the definition of $R(i,j,k)$, the following statement holds:
+     \begin{align*}
+         \mathrm{Rev}(\bar{F}', \mathcal{M}') = \max_{j \leq \frac{1}{\epsilon}, k \leq \frac{1}{\epsilon^2}} R\left(\frac{1}{\epsilon}, j, k\right)
+     \end{align*}
+
+     Using dynamic programming by applying \autoref{theorem:recursion-formular} and fixing the base cases $R(1,j,k) = 0$ for any $k \leq j$ and $R(1,j,k)=-\infty$ for any $k > j$,
+     we can calculate for all $\frac{1}{\epsilon^4}$ combinations of $i,j$ and $k$ the respective values of $R(i,j,k)$.
+     Each of those $R(i,j,k)$ needs at most $\frac{1}{\epsilon}$ calculations because of the maximum.
+     Therefore, we calculate the revenue of $\mathcal{M}'$ in $\mathcal{O}\left(\frac{1}{\epsilon^5}\right)$ time.
+     Recovering the actual mechanism $\mathcal{M}'$ and its allocation rule from that is simply a matter of backtracking the $j'$ that maximized our expression.
+ \end{proof}
+
+ All that is left is to proof \autoref{theorem:recursion-formular}.
+ \begin{proof}[Proof of \autoref{theorem:recursion-formular}]
+     First recall \autoref{eq:rijk}:
+
+     \begin{align*}
+         R(i,j,k) = \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq i\epsilon}\Ex{p_c(v)\mid v \leq i \epsilon}
+     \end{align*}
+
+     Also, observe that we can use the linearity of expectation to split up the expectation of \autoref{eq:rijk} into the case that $v \leq (i-1)\epsilon$ and the case that $v = \epsilon$.
+     \begin{align*}
+           & \Ex{p_c(v)\mid v \leq i \epsilon}                                                                                                                                      \\
+         = & \Pr{v \leq (i-1)\epsilon \mid v \leq i \epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} + \Pr{v = i \epsilon \mid v \leq i \epsilon} \Ex{p_c(v) \mid v = i \epsilon} \\
+     \end{align*}
+
+     Next if we pull in the $\Pr{v \leq i\epsilon}$ it neatly cancels out the condition on the probabilities, leading to:
+
+     \begin{align*}
+           & R(i,j,k)                                                                                                                                                                                             \\
+         = & \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} (\Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} + \Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon})
+     \end{align*}
+
+     Further, observe that for $p_c(v)$ in the second expectation, everything is already fixed through during the maximization, i.e. for the fixed value $v = i \epsilon$ the allocation is fixed and the utility is fixed, thus also the payment.
+     This means, we can pull out this term, since the maximization does not affect it.
+     So, we can focus on the term $\max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon)=k\epsilon^2} \Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon}$ on its own.
+
+     Note that this is similar to \autoref{eq:rijk} with $v = (i-1) \epsilon$, only the maximization constraints differ.
+     For that we only need to fix $x((i-1)\epsilon)$ and $u((i-1)\epsilon)$.
+
+     Conveniently, we can express the latter in terms of things that are already fixed.
+     Note that we can write $u(i\epsilon)$ as follows:
+
+     \begin{align*}
+         u(i\epsilon) & = \int_0^{i\epsilon} x(t) dt                                             \\
+                      & = \int_0^{(i-1)\epsilon} x(t) dt + \int_{i-1\epsilon}^{i\epsilon} x(t)dt \\
+                      & = u((i-1)\epsilon) + \epsilon j \epsilon^2                               \\
+     \end{align*}
+     Where in the last the step we used that $x(i\epsilon) = j\epsilon$.
+
+     Rearranging this, yields
+     \begin{align*}
+         u((i-1)\epsilon) = u(i\epsilon) - j \epsilon^2 = (k - j) \epsilon^2
+     \end{align*}
+
+     For $x((i - 1)\epsilon)$ one cannot find a direct solution derived from the constraints of $x(i\epsilon)$, thus we apply an actual maximization here.
+     However, we must ensure that $x$ is non-decreasing, thus $j' \epsilon = x((i-1)\epsilon) \leq x(i\epsilon) = j\epsilon$.
+
+     Combining this yields the following expression for the first term:
+     \begin{align*}
+         \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} = \max_{j' \leq j} R(i-1, j, k - j)
+     \end{align*}
+
+     Next we focus on the second term $\Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon}$ given that $x(i\epsilon) = j\epsilon$ and $u(i\epsilon) = k\epsilon^2$.
+     $\Pr{v = i \epsilon} = q_i$ per definition of $q_i$.
+     The expected revenue given that $v = i \epsilon$ depends on the event that the buyer participates.
+     She only does this, if her participation cost is higher than the utility gain from the single-parameter mechanism.
+     In order words:
+
+     \begin{align*}
+          & \Ex{p_c(v) \mid v = i \epsilon}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2}                                         \\
+          & = \Pr{c \geq u(i\epsilon)} \Ex{p_c(i\epsilon) \mid c \leq u(i\epsilon)}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2} \\
+          & = \bar{F}_i'(k\epsilon^2) \Ex{p(i\epsilon)}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2}                             \\
+          & = \bar{F}_i'(k\epsilon^2) \Ex{u(i\epsilon) - i\epsilon \cdot x(i\epsilon)}                                                      \\
+          & = \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2                                                                             \\
+     \end{align*}
+
+     This yields for the second term:
+     \begin{align*}
+           & \Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2} \\
+         = & q_i \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2
+     \end{align*}
+
+     Combining both terms then results in our goal:
+     \begin{align*}
+         R(i,j,k) = \max_{j' \leq j} R(i-1, j, k - j) + q_i \bar{F}_i'(k \epsilon^2) \cdot (i\cdot j - k)\epsilon^2
+     \end{align*}
+ \end{proof}
+
 \end{section}
 
-\bibliographystyle{plain}
 \bibliography{references} % Insert name of .bib file
 
 \end{document}
