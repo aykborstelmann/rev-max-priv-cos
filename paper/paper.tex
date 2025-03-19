@@ -8,7 +8,6 @@
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{thmtools}
-\usepackage{hyperref}
 \usepackage{pgf, tikz}
 \usepackage{xspace, units}
 \usepackage{typearea}
@@ -35,6 +34,9 @@
 \renewcommand{\Pr}[1]{\mbox{\rm\bf Pr}\left[#1\right]}
 \newcommand{\Ex}[2][]{\mbox{\rm\bf E}_{#1}\left[#2\right]}
 \newcommand{\1}[1]{\mbox{\rm\bf 1}_{#1}}
+
+\usepackage{hyperref}
+\usepackage[noabbrev]{cleveref}
 
 \author{Ayk Borstelmann}
 
@@ -63,9 +65,9 @@
  All those costs we refer to as participation costs of an auction for this buyer.
  As buyers might not be convinced to share those costs publically beforehand, e.g. since it might be sensitive information, we are studying the problem of private participation costs.
 
- In this article based on the work of \citet{primary}, we derive a model in \autoref{sec:model} that incorporates private participation costs as well as valuations.
- Next we focus on finding a formulation of the expected revenue that is to be maximized as also done by \citet{myerson} in \autoref{sec:incentive-comptaible-mechanism-revenue}.
- We will see that this problem becomes inherently non-convex and thus we focus on finding an FPTAS that achieves a $\mathrm{OPT} - 4\epsilon$ approximation where $\mathrm{OPT}$ refers to the optimal single buyer mechanism in \autoref{sec:revenue-maximization}.
+ In this article based on the work of \citet{primary}, we derive a model in \cref{sec:model} that incorporates private participation costs as well as valuations.
+ Next we focus on finding a formulation of the expected revenue that is to be maximized as also done by \citet{myerson} in \cref{sec:incentive-comptaible-mechanism-revenue}.
+ We will see that this problem becomes inherently non-convex and thus we focus on finding an FPTAS that achieves a $\mathrm{OPT} - 4\epsilon$ approximation where $\mathrm{OPT}$ refers to the optimal single buyer mechanism in \cref{sec:revenue-maximization}.
 \end{section}
 
 \begin{section}{Model}
@@ -100,7 +102,7 @@
  \label{sec:incentive-comptaible-mechanism-revenue}
  In auction design one usually tries to find incentive compatible mechanism and then to maximize the revenue under the assumptions that buyers reveal their type truthfully.
 
- For the first part, in common single parameter mechanisms \citet{myerson} found a clear characterization of a truthful mechanism (\autoref{lemma:myersons-lemma}).
+ For the first part, in common single parameter mechanisms \citet{myerson} found a clear characterization of a truthful mechanism (\Cref{lemma:myersons-lemma}).
 
  \begin{lemma}[Myerson's Lemma \cite{myerson}]
      \label{lemma:myersons-lemma}
@@ -112,8 +114,8 @@
      \end{align*}
  \end{lemma}
 
- \citet{primary} found that we can base our work on Myerson's Lemma (\ref{lemma:myersons-lemma})
- by generalizing a truthful single-parameter mechanism to a one that takes participation cost into account (\autoref{lemma:thruthful-mechanism}).
+ \citet{primary} found that we can base our work on Myerson's lemma (\ref{lemma:myersons-lemma})
+ by generalizing a truthful single-parameter mechanism to a one that takes participation cost into account (\Cref{lemma:thruthful-mechanism}).
 
  \begin{lemma}[Incentive Compatibile Mechanism \cite{primary}]
      \label{lemma:thruthful-mechanism}
@@ -122,7 +124,7 @@
  \end{lemma}
 
  Next to maximize the expected revenue, it is convenient to have a formulation for it.
- In the single parameter setting, again \citet{myerson} provided such as well (\autoref{lemma:myerson-revenue}).
+ In the single parameter setting, again \citet{myerson} provided such as well (\Cref{lemma:myerson-revenue}).
 
  \begin{lemma}[Myerson's Revenue \cite{myerson}]
      \label{lemma:myerson-revenue}
@@ -137,7 +139,7 @@
  \end{lemma}
 
  Following from that we derive an expression for the expected revenue given private participation costs.
- For that we first formulize the mechanism described in \autoref{lemma:thruthful-mechanism}.
+ For that we first formulize the mechanism described in \Cref{lemma:thruthful-mechanism}.
 
  Given a truthful single parameter mechanism $\mathcal{M}=(x,p)$.
  For that, we define $v_x(c)$ as the minimum value a buyer must have, s.t. she would still participate in the mechanism $\mathcal{M}$ when having participation cost $c$.
@@ -145,7 +147,7 @@
  \begin{align*}
      v_x(c) = \inf_{v \in \RR_{\geq 0}} \{\underbrace{vx(v) - p(v) \geq c}_{u^\mathcal{M}(v)}\}
  \end{align*}
- Next we can define the allocation function $x_c$ as simply implementing the characterization of \autoref{lemma:thruthful-mechanism},
+ Next we can define the allocation function $x_c$ as simply implementing the characterization of \Cref{lemma:thruthful-mechanism},
  by allocating $x(v)$ if the buyer has a value that is at least $v_x(c)$ and $0$ otherwise.
 
  \begin{align*}
@@ -156,7 +158,7 @@
  \end{align*}
  Similar the payment rule $p_c(v)$ delegates the payment rule $p$ in the case that $v \geq v_x(c)$ and otherwise expects no payment.
  Together, they define the mechanism $\mathcal{M}_c = (x_c, p_c)$ induced by the mechanism $\mathcal{M}$.
- See \autoref{fig:visualization-of-induced-mechanism} for a visualization of the allocation rule.
+ See \cref{fig:visualization-of-induced-mechanism} for a visualization of the allocation rule.
 
  \begin{figure}[htp!]
      \centering
@@ -202,7 +204,7 @@
  \end{figure}
 
  If we now define a virtual value function that is conditional on $c$, by using the conditional cumulative distribution $\bar{F}_c$ and the conditional density function $\hat{f}_c$ as
- $\varphi_c(v) = v - \frac{1- \bar{F}_c(v)}{\hat{f}_c(v)}$ then we can express the expected revenue in \autoref{theorem:expected-revenue}.
+ $\varphi_c(v) = v - \frac{1- \bar{F}_c(v)}{\hat{f}_c(v)}$ then we can express the expected revenue in \cref{theorem:expected-revenue}.
 
  \begin{theorem}[Expected Revenue \cite{primary}]
      \label{theorem:expected-revenue}
@@ -235,7 +237,7 @@
          \end{aligned}
      \end{equation}
      Here the last step uses that $u^\mathcal{M}(v_c(x)) = c$ per definition of $v_c(x)$.
-     Plugging \autoref{eq:utility-participating} into \autoref{eq:payment-participating} yields \autoref{eq:payment-participating-final}:
+     Plugging \cref{eq:utility-participating} into \cref{eq:payment-participating} yields \cref{eq:payment-participating-final}:
      \begin{align}
          \label{eq:payment-participating-final}
          p_c(v) = v x_c(v) - \int_0^v x_c(t) dt - c
@@ -258,7 +260,7 @@
                                            & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} - (1 - \bar{F}_c(v_x(c))) \cdot c \\
          \end{aligned}
      \end{equation}
-     Here in the last step we used that for fixed $c$, $\mathcal{M}_c$ is a truthful mechanism thus we can apply \autoref{lemma:myerson-revenue}, simultaneously we use the definition of the cumulative distribution.
+     Here in the last step we used that for fixed $c$, $\mathcal{M}_c$ is a truthful mechanism thus we can apply \cref{lemma:myerson-revenue}, simultaneously we use the definition of the cumulative distribution.
 
      Now we consider the opposite case, that is $c \leq -p_0$.
      Analogously to the case before, $c \leq -p_0$ means that the mechanism's payment for simply participating already pays of our participation cost.
@@ -278,7 +280,7 @@
      \end{equation}
      Where in the last equality, we used that since $v_x(c) = 0$, $\bar{F}_{c}(v_x(c)) = 0$ as well.
 
-     Now we can finally draw the expectation around the previously fixed $c$, combine \autoref{eq:expected-revenue-first-case} and \autoref{eq:expected-revenue-second-case} to get the wished theorem:
+     Now we can finally draw the expectation around the previously fixed $c$, combine \cref{eq:expected-revenue-first-case} and \cref{eq:expected-revenue-second-case} to get the wished theorem:
 
      \begin{align*}
          \Ex{p_c(v)} & = \Ex[c \sim G]{\Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + (1 - \bar{F}_{c}(v_x(c))) \max\{c, -p_0\} }
@@ -304,7 +306,7 @@
 
  This leads us to a problem definition for which an optimal mechanism is computable in polynomial time with respect to $\frac{1}{\epsilon}$.
  We will see later how to do this.
- Still it is not clear that this mechanism is close to the optimal mechanism for the original problem, here \autoref{theorem:approximation-guarantee} comes into play.
+ Still it is not clear that this mechanism is close to the optimal mechanism for the original problem, here \cref{theorem:approximation-guarantee} comes into play.
 
  \begin{theorem}
      \label{theorem:approximation-guarantee}
@@ -327,18 +329,18 @@
      If $\sup_{\omega \in \Omega} || t_1(\omega) - t_2(\omega) ||_\infty \leq \epsilon$, then $|\mathrm{OPT}(t_1) - \mathrm{OPT}(t_2)| \leq 3\epsilon$.
  \end{lemma}
 
- \begin{proof}[Proof of \autoref{theorem:approximation-guarantee}.]
+ \begin{proof}[Proof of \Cref{theorem:approximation-guarantee}.]
      For any $\bar{F}$, let $\mathcal{M}'$ be the optimal mechanism on the discretized type distribution $\bar{F}'$ for which the allocation rule is also discretized.
      First, since we defined $\bar{F}'$ as the \textit{rounded down} type distribution, for any mechanism $\mathcal{M}$ with monotone allocation rule holds, that $\mathrm{Rev}(\bar{F}, \mathcal{M}) \geq \mathrm{Rev}(\bar{F}', \mathcal{M})$, so in particular this also applies to $\mathcal{M}'$.
 
      Next, we define $\widehat{\mathcal{M}}$ as the optimal mechanism on $\bar{F}'$ (one that is allowed to allocate continuous values).
-     We use \autoref{lemma:allocation-function-within-e}, since our allocation function $x'$ of mechanism $\mathcal{M}'$
+     We use \cref{lemma:allocation-function-within-e}, since our allocation function $x'$ of mechanism $\mathcal{M}'$
      allocates within an $\epsilon$-interval of the allocation function $\hat{x}$ of $\widehat{\mathcal{M}}$.
-     Thus, according to \autoref{lemma:allocation-function-within-e}, we got $\mathrm{Rev}(\bar{F}', \mathcal{M}') \geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon$.
+     Thus, according to \cref{lemma:allocation-function-within-e}, we got $\mathrm{Rev}(\bar{F}', \mathcal{M}') \geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon$.
 
      Finally, note, that for the two type distributions $\bar{F}$ and $\bar{F}'$ it holds that they originate from the same probability measure, yet the value of the random variables differs by at most $\epsilon$.
      Also note, that we did not round the participation cost, thus the difference with respect to the infinity-norm $|| \cdot ||_{\infty}$ is also at most $\epsilon$.
-     Therefore, we can apply \autoref{lemma:difference-in-optimal-mechanisms}, since $\widehat{\mathcal{M}}$ is optimal mechanism on $\bar{F}'$,
+     Therefore, we can apply \cref{lemma:difference-in-optimal-mechanisms}, since $\widehat{\mathcal{M}}$ is optimal mechanism on $\bar{F}'$,
      to get $\mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) \geq \mathrm{OPT}(\bar{F}') - 3\epsilon$.
 
      Putting everything together yields the stated approximation guarantee:
@@ -354,9 +356,9 @@
 
  We will use a dynamic program based on the approximation degree $\epsilon$ to calculate for all possible valuations
  an allocation function that optimizes the revenue.
- We will make sure this allocation rule is non-decreasing and will follow the payment rule through \autoref{lemma:thruthful-mechanism}
+ We will make sure this allocation rule is non-decreasing and will follow the payment rule through \cref{lemma:thruthful-mechanism}
  in order to also get a truthful mechanism.
- Note that \autoref{lemma:thruthful-mechanism} also tells us, that it is enough to find a single parameter allocation rule and optimize the revenue of the induced mechanism $\mathcal{M}_c$ with payment rule $p_c$.
+ Note that \cref{lemma:thruthful-mechanism} also tells us, that it is enough to find a single parameter allocation rule and optimize the revenue of the induced mechanism $\mathcal{M}_c$ with payment rule $p_c$.
 
  For integers $i,j \leq \frac{1}{\epsilon}$ and $k \leq \frac{1}{\epsilon^2}$,
  we define $R(i,j,k)$ as the optimal revenue from only a subset of the buyers, those that have a value $v \leq i \epsilon$
@@ -377,7 +379,7 @@
      where $q_i$ refers to the occurrence probability of $v = i \epsilon$ and $\bar{F}_i'$ refers to the cumulative type distribution conditional on the value being $i\epsilon$.
  \end{theorem}
 
- See \autoref{fig:fptas-recursion-formular} for a visualization of this theorem.
+ See \cref{fig:fptas-recursion-formular} for a visualization of this theorem.
 
  \begin{figure}[htp!]
      \centering
@@ -420,7 +422,7 @@
              }
      \end{tikzpicture}
      \caption{
-         Visualization of \autoref{theorem:recursion-formular}. For $R(3,2,k)$ we need to maximize over all $R(2, j', k-j)$ where $j' \leq j = 2$.
+         Visualization of \Cref{theorem:recursion-formular}. For $R(3,2,k)$ we need to maximize over all $R(2, j', k-j)$ where $j' \leq j = 2$.
      }
      \label{fig:fptas-recursion-formular}
  \end{figure}
@@ -437,20 +439,20 @@
          \mathrm{Rev}(\bar{F}', \mathcal{M}') = \max_{j \leq \frac{1}{\epsilon}, k \leq \frac{1}{\epsilon^2}} R\left(\frac{1}{\epsilon}, j, k\right)
      \end{align*}
 
-     Using dynamic programming by applying \autoref{theorem:recursion-formular} and fixing the base cases $R(1,j,k) = 0$ for any $k \leq j$ and $R(1,j,k)=-\infty$ for any $k > j$,
+     Using dynamic programming by applying \cref{theorem:recursion-formular} and fixing the base cases $R(1,j,k) = 0$ for any $k \leq j$ and $R(1,j,k)=-\infty$ for any $k > j$,
      we can calculate for all $\frac{1}{\epsilon^4}$ combinations of $i,j$ and $k$ the respective values of $R(i,j,k)$.
      Each of those $R(i,j,k)$ needs at most $\frac{1}{\epsilon}$ calculations because of the maximum.
      Therefore, we calculate the revenue of $\mathcal{M}'$ in $\mathcal{O}\left(\frac{1}{\epsilon^5}\right)$ time.
      Recovering the actual mechanism $\mathcal{M}'$ and its allocation rule from that is simply a matter of backtracking the $j'$ that maximized our expression.
  \end{proof}
 
- All that is left is to proof \autoref{theorem:recursion-formular}.
- \begin{proof}[Proof of \autoref{theorem:recursion-formular}]
-     First recall the definition of $R(i,j,k)$ (\autoref{eq:rijk}):
+ All that is left is to proof \cref{theorem:recursion-formular}.
+ \begin{proof}[Proof of \Cref{theorem:recursion-formular}]
+     First recall the definition of $R(i,j,k)$ (\cref{eq:rijk}):
      \begin{align*}
          R(i,j,k) = \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq i\epsilon}\Ex{p_c(v)\mid v \leq i \epsilon}
      \end{align*}
-     Observe that we can use the linearity of expectation to split up the expectation of \autoref{eq:rijk} into the case that $v \leq (i-1)\epsilon$ and the case that $v = i \epsilon$.
+     Observe that we can use the linearity of expectation to split up the expectation of \cref{eq:rijk} into the case that $v \leq (i-1)\epsilon$ and the case that $v = i \epsilon$.
 
      \begin{align*}
           & \Ex{p_c(v)\mid v \leq i \epsilon}                                                           \\
@@ -466,7 +468,7 @@
      This means, we can pull out the second term, since the maximization does not affect it.
      So, we can focus on the term $\max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon)=k\epsilon^2} \Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon}$ on its own.
 
-     Note that this is similar to \autoref{eq:rijk} with $v = (i-1) \epsilon$, only the maximization constraints differ.
+     Note that this is similar to \cref{eq:rijk} with $v = (i-1) \epsilon$, only the maximization constraints differ.
      For that we only need to fix $x((i-1)\epsilon)$ and $u((i-1)\epsilon)$.
      Conveniently, we can express the latter in terms of things that are already fixed.
      Note that we can write $u(i\epsilon)$ as follows:
@@ -514,11 +516,11 @@
  \end{proof}
 
  \subsection{Reduction to Multiple Buyer}
- Using the mechanism designed in \autoref{sec:revenue-maximization} for a single buyer, \citet{primary} derive an approximate algorithm for multiple buyers.
+ Using the mechanism designed in \cref{sec:revenue-maximization} for a single buyer, \citet{primary} derive an approximate algorithm for multiple buyers.
  For that they use that any algorithm allocating a single item to multiple buyers allocates the item in expectation to at most once.
  Therefore, the sum of ex-ante probabilities for allocating it to each buyer is also at most $1$.
  One now splits the probabilities into shares for each buyer while maximizing the revenue.
- After that each buyer is approached sequentially with the single parameter mechanism from \autoref{sec:revenue-maximization}.
+ After that each buyer is approached sequentially with the single parameter mechanism from \cref{sec:revenue-maximization}.
  The mechanism is modified, s.t. the item is only allocated with the precomputed probability to each buyer.
  This general reduction scheme was first proposed by \citet{alaei2012bayesian,alaei2014bayesian} leads to a $\frac{1}{2}\mathrm{OPT} - \epsilon$ approximation of the optimal mechanism in $\mathrm{poly}\left(\frac{1}{\epsilon}\right)$ computation time in our case.
 \end{section}
