@@ -63,7 +63,7 @@
  For example, consider the case that for moving to a new city one wants to buy a house that is sold in an auction.
  To participate there, one at least need to be present and therefore might pay for travel, accommodation and also incur some loss opportunity for not being elsewhere.
  All those costs we refer to as participation costs of an auction for this buyer.
- As buyers might not be convinced to share those costs publically beforehand, e.g. since it might be sensitive information, we are studying the problem of private participation costs.
+ As buyers might not be convinced to share those costs publically beforehand, e.g. since it might be sensitive information, we are studying the problem of \textit{private participation costs}.
 
  In this article based on the work of \citet{primary}, we derive a model in \cref{sec:model} that incorporates private participation costs as well as valuations.
  Next we focus on finding a formulation of the expected revenue that is to be maximized as also done by \citet{myerson} in \cref{sec:incentive-comptaible-mechanism-revenue}.
@@ -78,7 +78,7 @@
  A mechanism is a tuple $\mathcal{M} = (x,p)$ of an allocation function $x: \RR \rightarrow [0,1]^n$ and a payment function $p: \RR \rightarrow \RR^n$.
  A buyer's utility with respect to that mechanism is defined as $u_i^\mathcal{M}(v_i) = v_i x_i(v_i) - p_i(v_i)$.
 
- To model the private participation costs, each buyer now additionally has participation costs $c_i \in \RR$ \cite{primary}.
+ To model the \textit{private} participation costs, each buyer now additionally has participation costs $c_i \in \RR$ \cite{primary}.
  The mechanism $\mathcal{M}' = (x', p')$ will respect that participation costs as well.
  A buyer's utility is reduced by her participation cost if she participates.
 
@@ -90,6 +90,8 @@
  \end{align*}
  We will call a buyer's type the tuple of valuation and participation cost $t_i = (v_i, c_i)$.
  We study the setting where each buyer's type is drawn from a distribution $\bar{F_i}$.
+
+ Note that since both the valuation and the participation costs are private, this model also allows for correlation between the two, therefore is more general than using public participation costs.  
 \end{section}
 
 \begin{section}{Single Buyer Mechanism Design}
