@@ -259,8 +259,8 @@
      \begin{equation}
          \label{eq:expected-revenue-first-case}
          \begin{aligned}
-             \Ex[v \sim \bar{F}_c]{p_c(v)} & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t) dt - c \1{v \geq v_x(c)}}   \\
-                                           & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t) dt} - \Pr{v \geq v_x(c)}c   \\
+             \Ex[v \sim \bar{F}_c]{p_c(v)} & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t) dt - c \1{v \geq v_x(c)}}            \\
+                                           & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t) dt} - \Pr{v \geq v_x(c)}c            \\
                                            & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} - (1 - \bar{F}_c(v_x(c))) \cdot c \eqcomma
          \end{aligned}
      \end{equation}
@@ -277,8 +277,8 @@
      \begin{equation}
          \label{eq:expected-revenue-second-case}
          \begin{aligned}
-             \Ex[v \sim \bar{F}_c]{p_c(v)} & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t)dt + p_0}                  \\
-                                           & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + p_0                           \\
+             \Ex[v \sim \bar{F}_c]{p_c(v)} & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t)dt + p_0}                           \\
+                                           & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + p_0                                    \\
                                            & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + (1 - \bar{F}_{c}(v_x(c))) p_0 \eqcomma
          \end{aligned}
      \end{equation}
@@ -290,8 +290,7 @@
      \end{align*}
  \end{proof}
 
- Since we focus on revenue maximization, it is w.l.o.g. to consider $p_0 \geq 0$ \cite{primary}.
- Further \citet{primary} showed that for any mechanism with $p_0 \geq 0$ there exists a mechanism with weakly higher revenue that has $p_0 = 0$.
+ From \citet{primary} showed that for any mechanism with $p_0 \neq 0$ there exists a mechanism with weakly higher revenue that has $p_0 = 0$.
  Therefore, from now on, we disregard $p_0$.
 
  \subsection{Revenue Maximization}
@@ -462,7 +461,7 @@
      \end{align*}
      Next if we pull in the $\Pr{v \leq i\epsilon}$ it neatly cancels out the condition on the probabilities, leading to
      \begin{align*}
-           & R(i,j,k)                                                                                                                                                                                             \\
+           & R(i,j,k)                                                                                                                                                                                                    \\
          = & \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} (\Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} + \Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon}) \eqdot
      \end{align*}
      Further, observe that for $p_c(v)$ in the second expectation, everything is already fixed with the maximization constraints, i.e. for the fixed value $v = i \epsilon$ the allocation is fixed and the utility is fixed, thus also the payment.
