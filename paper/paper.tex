@@ -27,6 +27,9 @@
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{observation}[theorem]{Observation}
 
+\usepackage{hyperref}
+\usepackage[noabbrev]{cleveref}
+
 \newcommand{\NN}{\ensuremath{\mathbb{N}}}
 \newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
 \newcommand{\RR}{\ensuremath{\mathbb{R}}}
@@ -35,8 +38,8 @@
 \newcommand{\Ex}[2][]{\mbox{\rm\bf E}_{#1}\left[#2\right]}
 \newcommand{\1}[1]{\mbox{\rm\bf 1}_{#1}}
 
-\usepackage{hyperref}
-\usepackage[noabbrev]{cleveref}
+\newcommand{\eqdot}{\text{ .}}
+\newcommand{\eqcomma}{\text{ ,}}
 
 \author{Ayk Borstelmann}
 
@@ -91,7 +94,7 @@
  We will call a buyer's type the tuple of valuation and participation cost $t_i = (v_i, c_i)$.
  We study the setting where each buyer's type is drawn from a distribution $\bar{F_i}$.
 
- Note that since both the valuation and the participation costs are private, this model also allows for correlation between the two, therefore is more general than using public participation costs.  
+ Note that since both the valuation and the participation costs are private, this model also allows for correlation between the two, therefore is more general than using public participation costs.
 \end{section}
 
 \begin{section}{Single Buyer Mechanism Design}
@@ -104,20 +107,20 @@
  \label{sec:incentive-comptaible-mechanism-revenue}
  In auction design one usually tries to find incentive compatible mechanism and then to maximize the revenue under the assumptions that buyers reveal their type truthfully.
 
- For the first part, in common single parameter mechanisms \citet{myerson} found a clear characterization of a truthful mechanism (\Cref{lemma:myersons-lemma}).
+ For the first part, in common single parameter mechanisms \citet{myerson} found a clear characterization of a truthful mechanism.
 
  \begin{lemma}[Myerson's Lemma \cite{myerson}]
      \label{lemma:myersons-lemma}
      For single parameter environments, an allocation rule $x$ is implementable if and only if it is monotone.
      If $x$ is monotone, then there exists a payment rule $p$, s.t. the mechanism $\mathcal{M}=(x,p)$ is truthful
-     and $p$ is given by:
+     and $p$ is given by
      \begin{align*}
-         p(v) = v x(v) - \int_0^v x(t) dt + p_0
+         p(v) = v x(v) - \int_0^v x(t) dt + p_0 \eqdot
      \end{align*}
  \end{lemma}
 
  \citet{primary} found that we can base our work on Myerson's lemma (\ref{lemma:myersons-lemma})
- by generalizing a truthful single-parameter mechanism to a one that takes participation cost into account (\Cref{lemma:thruthful-mechanism}).
+ by generalizing a truthful single-parameter mechanism to a one that takes participation cost into account.
 
  \begin{lemma}[Incentive Compatibile Mechanism \cite{primary}]
      \label{lemma:thruthful-mechanism}
@@ -126,7 +129,7 @@
  \end{lemma}
 
  Next to maximize the expected revenue, it is convenient to have a formulation for it.
- In the single parameter setting, again \citet{myerson} provided such as well (\Cref{lemma:myerson-revenue}).
+ In the single parameter setting, again \citet{myerson} provided such as well.
 
  \begin{lemma}[Myerson's Revenue \cite{myerson}]
      \label{lemma:myerson-revenue}
@@ -134,14 +137,13 @@
      Let $\mathcal{M}=(x,p)$ be a truthful single-parameter mechanism, then the expected revenue equals the expected virtual welfare. That is
      \begin{align*}
          \mathbf{E}_v\left[p(v)\right]
-         = \mathbf{E}_v\left[x(v)\varphi(v)\right] + p_0
+         = \mathbf{E}_v\left[x(v)\varphi(v)\right] + p_0 \eqcomma
      \end{align*}
-
      where $\varphi(t) = t - \frac{1 - F(t)}{f(t)}$
  \end{lemma}
 
  Following from that we derive an expression for the expected revenue given private participation costs.
- For that we first formulize the mechanism described in \Cref{lemma:thruthful-mechanism}.
+ For that we first formalize the mechanism described in \cref{lemma:thruthful-mechanism}.
 
  Given a truthful single parameter mechanism $\mathcal{M}=(x,p)$.
  For that, we define $v_x(c)$ as the minimum value a buyer must have, s.t. she would still participate in the mechanism $\mathcal{M}$ when having participation cost $c$.
@@ -200,25 +202,25 @@
          }
      \end{subfigure}
      \caption{
-         Exemplary visualization of $v_x(c)$ and the induced allocation rule $x_c(v)$.
+         Visualization of $v_x(c)$ and the induced allocation rule $x_c(v)$.
      }
      \label{fig:visualization-of-induced-mechanism}
  \end{figure}
 
  If we now define a virtual value function that is conditional on $c$, by using the conditional cumulative distribution $\bar{F}_c$ and the conditional density function $\hat{f}_c$ as
- $\varphi_c(v) = v - \frac{1- \bar{F}_c(v)}{\hat{f}_c(v)}$ then we can express the expected revenue in \cref{theorem:expected-revenue}.
+ $\varphi_c(v) = v - \frac{1- \bar{F}_c(v)}{\hat{f}_c(v)}$ then we can express the expected revenue in the following theorem.
 
  \begin{theorem}[Expected Revenue \cite{primary}]
      \label{theorem:expected-revenue}
      Given any $\bar{F}$ with marginal cost distribution $G$, any mechanism $\mathcal{M}=(x,p)$, then the expected revenue $\Ex[t \sim \bar{F}]{p_c(v)}$ of the seller is
 
      \begin{align*}
-         \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \max\{-p_0,c\}\right]
+         \mathbf{E}_{c \sim G}\left[\mathbf{E}_{v\sim\bar{F}_c}\left[x_c(v)\varphi_c(v)\right] - (1-\bar{F}_c(v_x(c))) \cdot \max\{-p_0,c\}\right] \eqdot
      \end{align*}
  \end{theorem}
 
  \begin{proof}
-     We proof this using a case distinction and then draw the expectation.
+     We prove this using a case distinction and then draw the expectation.
      First start by fixing $c$ arbitrarily.
 
      Consider the case that $c > -p_0$. Note that $-p_0$ corresponds to a payment the buyer would get from the mechanism for participating.
@@ -239,57 +241,56 @@
          \end{aligned}
      \end{equation}
      Here the last step uses that $u^\mathcal{M}(v_c(x)) = c$ per definition of $v_c(x)$.
-     Plugging \cref{eq:utility-participating} into \cref{eq:payment-participating} yields \cref{eq:payment-participating-final}:
+     Plugging \cref{eq:utility-participating} into \cref{eq:payment-participating} yields
      \begin{align}
          \label{eq:payment-participating-final}
-         p_c(v) = v x_c(v) - \int_0^v x_c(t) dt - c
+         p_c(v) = v x_c(v) - \int_0^v x_c(t) dt - c \eqdot
      \end{align}
      Next we consider the case that the buyer does not participate, i.e. $v < v_x(c)$.
-     In that case, the payment rule requests no payment, i.e. $p_c(v) = 0$, yet conveniently some part of the expression found before are also $0$:
+     In that case, the payment rule requests no payment, i.e. $p_c(v) = 0$, yet conveniently some part of the expression found before are also $0$.
      \begin{align*}
          p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt
      \end{align*}
-     Thus, we can represent this entire case using an indicator function:
+     Thus, we can represent this entire case using an indicator function.
      \begin{align*}
          p_c(v) = 0 = v x_c(v) - \int_0^v x_c(t) dt - c \1{v \geq v_x(c)}
      \end{align*}
-     Drawing the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields:
+     Drawing the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields
      \begin{equation}
          \label{eq:expected-revenue-first-case}
          \begin{aligned}
              \Ex[v \sim \bar{F}_c]{p_c(v)} & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t) dt - c \1{v \geq v_x(c)}}   \\
                                            & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t) dt} - \Pr{v \geq v_x(c)}c   \\
-                                           & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} - (1 - \bar{F}_c(v_x(c))) \cdot c \\
+                                           & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} - (1 - \bar{F}_c(v_x(c))) \cdot c \eqcomma
          \end{aligned}
      \end{equation}
-     Here in the last step we used that for fixed $c$, $\mathcal{M}_c$ is a truthful mechanism thus we can apply \cref{lemma:myerson-revenue}, simultaneously we use the definition of the cumulative distribution.
+     where in the last step we used that for fixed $c$, $\mathcal{M}_c$ is a truthful mechanism thus we can apply \cref{lemma:myerson-revenue}, simultaneously we use the definition of the cumulative distribution.
 
      Now we consider the opposite case, that is $c \leq -p_0$.
      Analogously to the case before, $c \leq -p_0$ means that the mechanism's payment for simply participating already pays of our participation cost.
      Certainly in that case $v_x(c) = 0$ and the buyer always participates and pays $p(v)$.
-     Since $v_x(c) = 0$, we have $x_c(v) = x(v)$ for all $v \in \RR_{\geq 0}$, therefore:
+     Since $v_x(c) = 0$, we have $x_c(v) = x(v)$ for all $v \in \RR_{\geq 0}$, therefore
      \begin{align*}
-         p_c(v) = p(v) = v x(v) - \int_0^v x(t)dt + p_0 = v x_c(v) - \int_0^v x_c(t)dt + p_0
+         p_c(v) = p(v) = v x(v) - \int_0^v x(t)dt + p_0 = v x_c(v) - \int_0^v x_c(t)dt + p_0 \eqdot
      \end{align*}
-     Drawing again the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields:
+     Drawing again the expectation around the value $v \sim \bar{F}_c$ while keeping the participation cost still fixed yields
      \begin{equation}
          \label{eq:expected-revenue-second-case}
          \begin{aligned}
              \Ex[v \sim \bar{F}_c]{p_c(v)} & = \Ex[v \sim \bar{F}_c]{v x_c(v) - \int_0^v x_c(t)dt + p_0}                  \\
                                            & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + p_0                           \\
-                                           & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + (1 - \bar{F}_{c}(v_x(c))) p_0
+                                           & = \Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + (1 - \bar{F}_{c}(v_x(c))) p_0 \eqcomma
          \end{aligned}
      \end{equation}
-     Where in the last equality, we used that since $v_x(c) = 0$, $\bar{F}_{c}(v_x(c)) = 0$ as well.
+     where in the last equality, we used that since $v_x(c) = 0$, $\bar{F}_{c}(v_x(c)) = 0$ as well.
 
-     Now we can finally draw the expectation around the previously fixed $c$, combine \cref{eq:expected-revenue-first-case} and \cref{eq:expected-revenue-second-case} to get the wished theorem:
-
+     Now we can finally draw the expectation around the previously fixed $c$, combine \cref{eq:expected-revenue-first-case} and \cref{eq:expected-revenue-second-case} to get the wished theorem.
      \begin{align*}
          \Ex{p_c(v)} & = \Ex[c \sim G]{\Ex[v \sim \bar{F}_c]{x_c(v) \varphi_c(v)} + (1 - \bar{F}_{c}(v_x(c))) \max\{c, -p_0\} }
      \end{align*}
  \end{proof}
 
- Since we focus on revenue maximization, it is w.l.o.g. to consider $p_0 \geq 0$.
+ Since we focus on revenue maximization, it is w.l.o.g. to consider $p_0 \geq 0$ \cite{primary}.
  Further \citet{primary} showed that for any mechanism with $p_0 \geq 0$ there exists a mechanism with weakly higher revenue that has $p_0 = 0$.
  Therefore, from now on, we disregard $p_0$.
 
@@ -318,7 +319,7 @@
      $\mathrm{OPT}(\bar{F}) - 4\epsilon$, where $\mathrm{OPT}(\bar{F})$ refers to the optimal expected revenue on $\bar{F}$.
  \end{theorem}
 
- To proof this theorem we make use of the following lemmas without proofs:
+ To prove this theorem we make use of the following lemmas without proofs.
 
  \begin{lemma}[\citet{primary}]
      \label{lemma:allocation-function-within-e}
@@ -345,11 +346,11 @@
      Therefore, we can apply \cref{lemma:difference-in-optimal-mechanisms}, since $\widehat{\mathcal{M}}$ is optimal mechanism on $\bar{F}'$,
      to get $\mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) \geq \mathrm{OPT}(\bar{F}') - 3\epsilon$.
 
-     Putting everything together yields the stated approximation guarantee:
+     Putting everything together yields the stated approximation guarantee
      \begin{align*}
          \mathrm{Rev}(\bar{F}, \mathcal{M}') & \geq \mathrm{Rev}(\bar{F}', \mathcal{M}')                     \\
                                              & \geq \mathrm{Rev}(\bar{F}', \widehat{\mathcal{M}}) - \epsilon \\
-                                             & \geq \mathrm{OPT}(\bar{F}') - 4\epsilon
+                                             & \geq \mathrm{OPT}(\bar{F}') - 4\epsilon \eqdot
      \end{align*}
  \end{proof}
 
@@ -365,18 +366,17 @@
  For integers $i,j \leq \frac{1}{\epsilon}$ and $k \leq \frac{1}{\epsilon^2}$,
  we define $R(i,j,k)$ as the optimal revenue from only a subset of the buyers, those that have a value $v \leq i \epsilon$
  and while the allocation function is fixed for $i\epsilon$ to $x(i \epsilon) = j \epsilon$ and the utility is also fixed to $u(i \epsilon) = k \epsilon^2$.
- Observe this formulation can be express it in terms of an expectation:
-
+ Observe that this informal definition is equivalent to
  \begin{equation}
      \label{eq:rijk}
-     R(i,j,k) = \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq i\epsilon}\Ex{p_c(v)\mid v \leq i \epsilon}
+     R(i,j,k) = \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq i\epsilon}\Ex{p_c(v)\mid v \leq i \epsilon} \eqdot
  \end{equation}
 
  \begin{theorem}
      \label{theorem:recursion-formular}
-     For $i \geq 2$, $R(i,j,k)$ can be calculated as follows:
+     For $i \geq 2$, $R(i,j,k)$ can be calculated as
      \begin{align*}
-         R(i,j,k) = \max_{j' \leq j} R(i-1, j, k - j) + q_i \bar{F}_i'(k \epsilon^2) \cdot (i\cdot j - k)\epsilon^2
+         R(i,j,k) = \max_{j' \leq j} R(i-1, j, k - j) + q_i \bar{F}_i'(k \epsilon^2) \cdot (i\cdot j - k)\epsilon^2 \eqcomma
      \end{align*}
      where $q_i$ refers to the occurrence probability of $v = i \epsilon$ and $\bar{F}_i'$ refers to the cumulative type distribution conditional on the value being $i\epsilon$.
  \end{theorem}
@@ -436,9 +436,9 @@
      can be computed in $\mathcal{O}\left(\frac{1}{\epsilon^5}\right)$.
  \end{corollary}
  \begin{proof}
-     Observe that from the definition of $R(i,j,k)$, the following statement holds:
+     Observe that from the definition of $R(i,j,k)$, it holds that
      \begin{align*}
-         \mathrm{Rev}(\bar{F}', \mathcal{M}') = \max_{j \leq \frac{1}{\epsilon}, k \leq \frac{1}{\epsilon^2}} R\left(\frac{1}{\epsilon}, j, k\right)
+         \mathrm{Rev}(\bar{F}', \mathcal{M}') = \max_{j \leq \frac{1}{\epsilon}, k \leq \frac{1}{\epsilon^2}} R\left(\frac{1}{\epsilon}, j, k\right) \eqdot
      \end{align*}
 
      Using dynamic programming by applying \cref{theorem:recursion-formular} and fixing the base cases $R(1,j,k) = 0$ for any $k \leq j$ and $R(1,j,k)=-\infty$ for any $k > j$,
@@ -448,23 +448,22 @@
      Recovering the actual mechanism $\mathcal{M}'$ and its allocation rule from that is simply a matter of backtracking the $j'$ that maximized our expression.
  \end{proof}
 
- All that is left is to proof \cref{theorem:recursion-formular}.
+ All that is left is to prove \cref{theorem:recursion-formular}.
  \begin{proof}[Proof of \Cref{theorem:recursion-formular}]
-     First recall the definition of $R(i,j,k)$ (\cref{eq:rijk}):
+     First recall the definition of $R(i,j,k)$.
      \begin{align*}
          R(i,j,k) = \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq i\epsilon}\Ex{p_c(v)\mid v \leq i \epsilon}
      \end{align*}
      Observe that we can use the linearity of expectation to split up the expectation of \cref{eq:rijk} into the case that $v \leq (i-1)\epsilon$ and the case that $v = i \epsilon$.
-
      \begin{align*}
           & \Ex{p_c(v)\mid v \leq i \epsilon}                                                           \\
           & = \Pr{v \leq (i-1)\epsilon \mid v \leq i \epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} \\
           & + \Pr{v = i \epsilon \mid v \leq i \epsilon} \Ex{p_c(v) \mid v = i \epsilon}
      \end{align*}
-     Next if we pull in the $\Pr{v \leq i\epsilon}$ it neatly cancels out the condition on the probabilities, leading to:
+     Next if we pull in the $\Pr{v \leq i\epsilon}$ it neatly cancels out the condition on the probabilities, leading to
      \begin{align*}
            & R(i,j,k)                                                                                                                                                                                             \\
-         = & \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} (\Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} + \Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon})
+         = & \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} (\Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} + \Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon}) \eqdot
      \end{align*}
      Further, observe that for $p_c(v)$ in the second expectation, everything is already fixed with the maximization constraints, i.e. for the fixed value $v = i \epsilon$ the allocation is fixed and the utility is fixed, thus also the payment.
      This means, we can pull out the second term, since the maximization does not affect it.
@@ -473,45 +472,43 @@
      Note that this is similar to \cref{eq:rijk} with $v = (i-1) \epsilon$, only the maximization constraints differ.
      For that we only need to fix $x((i-1)\epsilon)$ and $u((i-1)\epsilon)$.
      Conveniently, we can express the latter in terms of things that are already fixed.
-     Note that we can write $u(i\epsilon)$ as follows:
-
+     Note that we can write $u(i\epsilon)$ as
      \begin{align*}
          u(i\epsilon) & = \int_0^{i\epsilon} x(t) dt                                             \\
                       & = \int_0^{(i-1)\epsilon} x(t) dt + \int_{i-1\epsilon}^{i\epsilon} x(t)dt \\
-                      & = u((i-1)\epsilon) + \epsilon j \epsilon^2                               \\
+                      & = u((i-1)\epsilon) + \epsilon j \epsilon^2 \eqcomma
      \end{align*}
-     Where in the last the step we used that $x(i\epsilon) = j\epsilon$.
+     where in the last the step we used that $x(i\epsilon) = j\epsilon$.
      Rearranging this, yields
      \begin{align*}
-         u((i-1)\epsilon) = u(i\epsilon) - j \epsilon^2 = (k - j) \epsilon^2
+         u((i-1)\epsilon) = u(i\epsilon) - j \epsilon^2 = (k - j) \epsilon^2 \eqdot
      \end{align*}
      For $x((i - 1)\epsilon)$ one cannot find a direct solution derived from the constraints of $x(i\epsilon)$, thus we apply an actual maximization here.
      However, we must ensure that $x$ is non-decreasing, thus $j' \epsilon = x((i-1)\epsilon) \leq x(i\epsilon) = j\epsilon$.
 
-     Combining this yields the following expression for the first term:
+     Combining this yields for the first term
      \begin{align*}
-         \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} = \max_{j' \leq j} R(i-1, j, k - j)
+         \max_{\mathcal{M}: x(i\epsilon) = j\epsilon, u(i\epsilon) = k \epsilon^2} \Pr{v \leq (i-1)\epsilon} \Ex{p_c(v) \mid v \leq (i - 1) \epsilon} = \max_{j' \leq j} R(i-1, j, k - j) \eqdot
      \end{align*}
 
      Next we focus on the second term $\Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon}$ given that $x(i\epsilon) = j\epsilon$ and $u(i\epsilon) = k\epsilon^2$.
      $\Pr{v = i \epsilon} = q_i$ per definition of $q_i$.
      The expected revenue given that $v = i \epsilon$ depends on the event that the buyer participates.
      She only does this, if her participation cost is higher than the utility gain from the single-parameter mechanism.
-     In other words:
+     In other words
      \begin{align*}
           & \Ex{p_c(v) \mid v = i \epsilon}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2}                                         \\
           & = \Pr{c \geq u(i\epsilon)} \Ex{p_c(i\epsilon) \mid c \leq u(i\epsilon)}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2} \\
           & = \bar{F}_i'(k\epsilon^2) \Ex{p(i\epsilon)}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2}                             \\
           & = \bar{F}_i'(k\epsilon^2) \Ex{u(i\epsilon) - i\epsilon \cdot x(i\epsilon)}                                                      \\
-          & = \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2
+          & = \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2 \eqdot
      \end{align*}
-     This simplifies the second term to the following:
+     This simplifies the second term to
      \begin{align*}
            & \Pr{v = i \epsilon} \Ex{p_c(v) \mid v = i \epsilon}_{x(i\epsilon) = j \epsilon, u(i\epsilon) = k\epsilon^2} \\
-         = & q_i \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2
+         = & q_i \bar{F}_i'(k\epsilon^2) (k - i \cdot j)\epsilon^2 \eqdot
      \end{align*}
-
-     Combining both terms proofs our theorem:
+     Combining both terms proves our theorem.
      \begin{align*}
          R(i,j,k) = \max_{j' \leq j} R(i-1, j, k - j) + q_i \bar{F}_i'(k \epsilon^2) \cdot (i\cdot j - k)\epsilon^2
      \end{align*}
